@@ -11,7 +11,9 @@ import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 import { JoinStreamDto, LeaveStreamDto, SendMessageDto } from './dto/chat-dto';
 import type { AuthenticatedSocket } from './types/chat.types';
+import { ApiExtraModels } from '@nestjs/swagger';
 
+@ApiExtraModels(JoinStreamDto, LeaveStreamDto, SendMessageDto)
 @WebSocketGateway()
 export class ChatGateway {
   constructor(private readonly chatService: ChatService) {}
@@ -21,6 +23,8 @@ export class ChatGateway {
   server: Server;
 
   handleConnection(client: AuthenticatedSocket) {
+    this.logger.log(`Client connected: ${client.id}`);
+
     client.user = {
       id: 'test',
       username: 'alex',

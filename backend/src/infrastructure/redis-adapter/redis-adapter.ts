@@ -16,18 +16,19 @@ export class RedisIoAdapter extends IoAdapter {
     this.pubClient = new Redis({
       host: configService.getOrThrow<string>('REDIS_HOST'),
       port: configService.getOrThrow<number>('REDIS_PORT'),
+      password: configService.getOrThrow<string>('REDIS_PASSWORD'),
+
       maxRetriesPerRequest: null,
     });
     this.subClient = new Redis({
       host: configService.getOrThrow<string>('REDIS_HOST'),
       port: configService.getOrThrow<number>('REDIS_PORT'),
+      password: configService.getOrThrow<string>('REDIS_PASSWORD'),
+
       maxRetriesPerRequest: null,
     });
 
     this.adapterConstructor = createAdapter(this.pubClient, this.subClient);
-
-    process.on('SIGTERM', () => void this.disconnect());
-    process.on('SIGINT', () => void this.disconnect());
   }
 
   createIOServer(port: number, options?: ServerOptions): Server {
@@ -36,8 +37,8 @@ export class RedisIoAdapter extends IoAdapter {
     return server;
   }
 
-  public async disconnect(): Promise<void> {
-    await this.pubClient.quit();
-    await this.subClient.quit();
+  public disconnect(): void {
+    this.pubClient.disconnect(false);
+    this.subClient.disconnect(false);
   }
 }

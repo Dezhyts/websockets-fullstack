@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GatewayModule } from './modules/gateway/gateway.module';
-import { ChatGatewayModule } from './modules/chat.gateway/chat.gateway.module';
+
 import { ChatModule } from './modules/chat/chat.module';
+import { PrismaModule } from './infrastructure/prisma/prisma.module';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -10,9 +11,9 @@ import { ChatModule } from './modules/chat/chat.module';
       isGlobal: true,
       envFilePath: ['.env.development.local', '.env.development', '.env'],
     }),
-    GatewayModule,
-    ChatGatewayModule,
     ChatModule,
+    PrismaModule,
+    MediaModule,
   ],
   controllers: [],
   providers: [],
