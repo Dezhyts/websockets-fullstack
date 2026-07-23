@@ -17,11 +17,11 @@ export class PrismaService
 
   public constructor(private readonly configService: ConfigService) {
     const adapter = new PrismaPg({
-      user: configService.getOrThrow<string>('POSTGRES_USER'),
-      password: configService.getOrThrow<string>('POSTGRES_PASSWORD'),
-      host: configService.getOrThrow<string>('POSTGRES_HOST'),
-      port: configService.getOrThrow<number>('POSTGRES_PORT'),
-      database: configService.getOrThrow<string>('POSTGRES_DB'),
+      user: configService.getOrThrow<string>('DATABASE_USER_AUTH'),
+      password: configService.getOrThrow<string>('DATABASE_PASSWORD_AUTH'),
+      host: configService.getOrThrow<string>('DATABASE_HOST_AUTH'),
+      port: configService.getOrThrow<number>('DATABASE_PORT_AUTH'),
+      database: configService.getOrThrow<string>('DATABASE_NAME_AUTH'),
     });
     super({ adapter });
   }

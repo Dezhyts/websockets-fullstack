@@ -28,6 +28,14 @@ export class RedisIoAdapter extends IoAdapter {
       maxRetriesPerRequest: null,
     });
 
+    this.pubClient.on('error', (error) => {
+      console.error('Redis pubClient error:', error);
+    });
+
+    this.subClient.on('error', (error) => {
+      console.error('Redis subClient error:', error);
+    });
+
     this.adapterConstructor = createAdapter(this.pubClient, this.subClient);
   }
 

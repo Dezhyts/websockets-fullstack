@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ChatModule } from './modules/chat/chat.module';
 import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { MediaModule } from './modules/media/media.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MediaModule } from './modules/media/media.module';
     ChatModule,
     PrismaModule,
     MediaModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

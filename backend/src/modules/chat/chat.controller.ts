@@ -1,5 +1,4 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { JoinStreamDto, LeaveStreamDto, SendMessageDto } from './dto/chat-dto';
 
 @Controller('_types/chat')

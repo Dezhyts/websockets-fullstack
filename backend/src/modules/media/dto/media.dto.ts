@@ -20,3 +20,23 @@ export class GetTokenDto {
   @IsNotEmpty()
   user: string;
 }
+
+export class IngressDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'conference-room-101',
+    required: true,
+    description: 'Room name',
+  })
+  roomName: string;
+
+  @ApiProperty({
+    description: 'streamId',
+    example: 'streamdId_123',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  streamId: string;
+}
