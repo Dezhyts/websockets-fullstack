@@ -21,7 +21,5 @@ export class AuthRepository {
     });
   }
 
-  async createUser(): Promise<User> {
-    return this.prismaService.user.create({});
-  }
+  async createUser() {}
 }

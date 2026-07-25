@@ -22,11 +22,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "strictPropertyInitialization": false,
+    "typeRoots": ["./node_modules/@types"],
     "paths": {
       "@prisma/generated": ["./prisma/generated"],
       "@prisma/generated/*": ["./prisma/generated/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@infrastructure/*": ["./src/infrastructure/*"]
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   }
 }
