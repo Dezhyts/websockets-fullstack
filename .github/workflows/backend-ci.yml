@@ -2,10 +2,11 @@ name: Backend CI/CD
 
 on:
   push:
-    branches: [main]
-    paths: ['backend/**']
+    branches: ['**']
+    paths: ['backend/**'] 
   pull_request:
-    branches: [main]
+    types: [opened, synchronize, reopened] 
+    branches: [main] 
     paths: ['backend/**']
 
 jobs:
@@ -17,22 +18,21 @@ jobs:
         image: postgres:15-alpine
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: super_secret_test_pass
+          POSTGRES_DB: websockets_test
         ports:
-          - 5433:5432
+          - 5433:5432 
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.Js
+        uses: actions/checkout@v4 
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-node-version: 20'
+          node-version: 20 
           cache: 'npm'
-          cache-dependencies-path: 'backend/package-lock.json'
+          cache-dependency-path: 'backend/package-lock.json' 
 
       - name: Install dependencies
         run: npm ci
@@ -48,7 +48,7 @@ jobs:
           npx prisma generate
         working-directory: ./backend
         env:
-          DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/test_db?schema=public"
+          DATABASE_URL: 'postgresql://postgres:secret_test_pass@localhost:5432/websockets_test?schema=public'
 
       - name: Build NestJS Application
         run: npm run build
