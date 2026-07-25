@@ -47,7 +47,7 @@ jobs:
           npx prisma generate
         working-directory: ./backend
         env:
-          DATABASE_URL: 'postgresql://postgres:secret_test_pass@localhost:5433/websockets_test?schema=public'
+          DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_test?schema=public'
 
       - name: Build NestJS Application
         run: npm run build
