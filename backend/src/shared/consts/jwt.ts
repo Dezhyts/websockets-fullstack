@@ -1,8 +1,8 @@
+import { Role } from '@prisma/generated/enums';
 import { JwtPayload as BaseJwtPayload } from 'jsonwebtoken';
-import { Role } from './roles.enum';
 
 export interface JwtPayload extends BaseJwtPayload {
-  id: string;
+  sub: string;
   email: string;
-  role: Role[];
+  role: Role;
 }

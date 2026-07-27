@@ -12,6 +12,7 @@ model Account {
   id       String @id @default(uuid())
   username String @unique
   email    String @unique
+  role     Role   @default(USER)
 
   password String
   avatar   String?
@@ -44,9 +45,15 @@ model Stream {
   title String
 
   account   Account @relation(fields: [accountId], references: [id])
-  accountId String @unique
+  accountId String  @unique
 
   messages Message[]
 
   @@map("streams")
+}
+
+enum Role {
+  USER
+  STREAMER
+  ADMIN
 }

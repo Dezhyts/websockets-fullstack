@@ -27,19 +27,19 @@ export type AggregateStream = {
 export type StreamMinAggregateOutputType = {
   id: string | null
   title: string | null
-  userId: string | null
+  accountId: string | null
 }
 
 export type StreamMaxAggregateOutputType = {
   id: string | null
   title: string | null
-  userId: string | null
+  accountId: string | null
 }
 
 export type StreamCountAggregateOutputType = {
   id: number
   title: number
-  userId: number
+  accountId: number
   _all: number
 }
 
@@ -47,19 +47,19 @@ export type StreamCountAggregateOutputType = {
 export type StreamMinAggregateInputType = {
   id?: true
   title?: true
-  userId?: true
+  accountId?: true
 }
 
 export type StreamMaxAggregateInputType = {
   id?: true
   title?: true
-  userId?: true
+  accountId?: true
 }
 
 export type StreamCountAggregateInputType = {
   id?: true
   title?: true
-  userId?: true
+  accountId?: true
   _all?: true
 }
 
@@ -138,7 +138,7 @@ export type StreamGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type StreamGroupByOutputType = {
   id: string
   title: string
-  userId: string | null
+  accountId: string
   _count: StreamCountAggregateOutputType | null
   _min: StreamMinAggregateOutputType | null
   _max: StreamMaxAggregateOutputType | null
@@ -165,34 +165,34 @@ export type StreamWhereInput = {
   NOT?: Prisma.StreamWhereInput | Prisma.StreamWhereInput[]
   id?: Prisma.StringFilter<"Stream"> | string
   title?: Prisma.StringFilter<"Stream"> | string
-  userId?: Prisma.StringNullableFilter<"Stream"> | string | null
-  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  accountId?: Prisma.StringFilter<"Stream"> | string
+  account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   messages?: Prisma.MessageListRelationFilter
 }
 
 export type StreamOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  userId?: Prisma.SortOrderInput | Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
+  accountId?: Prisma.SortOrder
+  account?: Prisma.AccountOrderByWithRelationInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type StreamWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
+  accountId?: string
   AND?: Prisma.StreamWhereInput | Prisma.StreamWhereInput[]
   OR?: Prisma.StreamWhereInput[]
   NOT?: Prisma.StreamWhereInput | Prisma.StreamWhereInput[]
   title?: Prisma.StringFilter<"Stream"> | string
-  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   messages?: Prisma.MessageListRelationFilter
-}, "id" | "userId">
+}, "id" | "accountId">
 
 export type StreamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountId?: Prisma.SortOrder
   _count?: Prisma.StreamCountOrderByAggregateInput
   _max?: Prisma.StreamMaxOrderByAggregateInput
   _min?: Prisma.StreamMinOrderByAggregateInput
@@ -204,41 +204,41 @@ export type StreamScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StreamScalarWhereWithAggregatesInput | Prisma.StreamScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Stream"> | string
   title?: Prisma.StringWithAggregatesFilter<"Stream"> | string
-  userId?: Prisma.StringNullableWithAggregatesFilter<"Stream"> | string | null
+  accountId?: Prisma.StringWithAggregatesFilter<"Stream"> | string
 }
 
 export type StreamCreateInput = {
   id?: string
   title: string
-  user?: Prisma.UserCreateNestedOneWithoutStreamsInput
+  account: Prisma.AccountCreateNestedOneWithoutStreamsInput
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput
 }
 
 export type StreamUncheckedCreateInput = {
   id?: string
   title: string
-  userId?: string | null
+  accountId: string
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput
 }
 
 export type StreamUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneWithoutStreamsNestedInput
+  account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput
 }
 
 export type StreamUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput
 }
 
 export type StreamCreateManyInput = {
   id?: string
   title: string
-  userId?: string | null
+  accountId: string
 }
 
 export type StreamUpdateManyMutationInput = {
@@ -249,7 +249,7 @@ export type StreamUpdateManyMutationInput = {
 export type StreamUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StreamNullableScalarRelationFilter = {
@@ -265,51 +265,51 @@ export type StreamScalarRelationFilter = {
 export type StreamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  accountId?: Prisma.SortOrder
 }
 
 export type StreamMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  accountId?: Prisma.SortOrder
 }
 
 export type StreamMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  accountId?: Prisma.SortOrder
 }
 
-export type StreamCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutUserInput
+export type StreamCreateNestedOneWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutAccountInput
   connect?: Prisma.StreamWhereUniqueInput
 }
 
-export type StreamUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutUserInput
+export type StreamUncheckedCreateNestedOneWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutAccountInput
   connect?: Prisma.StreamWhereUniqueInput
 }
 
-export type StreamUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutUserInput
-  upsert?: Prisma.StreamUpsertWithoutUserInput
+export type StreamUpdateOneWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutAccountInput
+  upsert?: Prisma.StreamUpsertWithoutAccountInput
   disconnect?: Prisma.StreamWhereInput | boolean
   delete?: Prisma.StreamWhereInput | boolean
   connect?: Prisma.StreamWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StreamUpdateToOneWithWhereWithoutUserInput, Prisma.StreamUpdateWithoutUserInput>, Prisma.StreamUncheckedUpdateWithoutUserInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StreamUpdateToOneWithWhereWithoutAccountInput, Prisma.StreamUpdateWithoutAccountInput>, Prisma.StreamUncheckedUpdateWithoutAccountInput>
 }
 
-export type StreamUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutUserInput
-  upsert?: Prisma.StreamUpsertWithoutUserInput
+export type StreamUncheckedUpdateOneWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutAccountInput
+  upsert?: Prisma.StreamUpsertWithoutAccountInput
   disconnect?: Prisma.StreamWhereInput | boolean
   delete?: Prisma.StreamWhereInput | boolean
   connect?: Prisma.StreamWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StreamUpdateToOneWithWhereWithoutUserInput, Prisma.StreamUpdateWithoutUserInput>, Prisma.StreamUncheckedUpdateWithoutUserInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StreamUpdateToOneWithWhereWithoutAccountInput, Prisma.StreamUpdateWithoutAccountInput>, Prisma.StreamUncheckedUpdateWithoutAccountInput>
 }
 
 export type StreamCreateNestedOneWithoutMessagesInput = {
@@ -326,41 +326,41 @@ export type StreamUpdateOneRequiredWithoutMessagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StreamUpdateToOneWithWhereWithoutMessagesInput, Prisma.StreamUpdateWithoutMessagesInput>, Prisma.StreamUncheckedUpdateWithoutMessagesInput>
 }
 
-export type StreamCreateWithoutUserInput = {
+export type StreamCreateWithoutAccountInput = {
   id?: string
   title: string
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput
 }
 
-export type StreamUncheckedCreateWithoutUserInput = {
+export type StreamUncheckedCreateWithoutAccountInput = {
   id?: string
   title: string
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput
 }
 
-export type StreamCreateOrConnectWithoutUserInput = {
+export type StreamCreateOrConnectWithoutAccountInput = {
   where: Prisma.StreamWhereUniqueInput
-  create: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
+  create: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
 }
 
-export type StreamUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.StreamUpdateWithoutUserInput, Prisma.StreamUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.StreamCreateWithoutUserInput, Prisma.StreamUncheckedCreateWithoutUserInput>
+export type StreamUpsertWithoutAccountInput = {
+  update: Prisma.XOR<Prisma.StreamUpdateWithoutAccountInput, Prisma.StreamUncheckedUpdateWithoutAccountInput>
+  create: Prisma.XOR<Prisma.StreamCreateWithoutAccountInput, Prisma.StreamUncheckedCreateWithoutAccountInput>
   where?: Prisma.StreamWhereInput
 }
 
-export type StreamUpdateToOneWithWhereWithoutUserInput = {
+export type StreamUpdateToOneWithWhereWithoutAccountInput = {
   where?: Prisma.StreamWhereInput
-  data: Prisma.XOR<Prisma.StreamUpdateWithoutUserInput, Prisma.StreamUncheckedUpdateWithoutUserInput>
+  data: Prisma.XOR<Prisma.StreamUpdateWithoutAccountInput, Prisma.StreamUncheckedUpdateWithoutAccountInput>
 }
 
-export type StreamUpdateWithoutUserInput = {
+export type StreamUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput
 }
 
-export type StreamUncheckedUpdateWithoutUserInput = {
+export type StreamUncheckedUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput
@@ -369,13 +369,13 @@ export type StreamUncheckedUpdateWithoutUserInput = {
 export type StreamCreateWithoutMessagesInput = {
   id?: string
   title: string
-  user?: Prisma.UserCreateNestedOneWithoutStreamsInput
+  account: Prisma.AccountCreateNestedOneWithoutStreamsInput
 }
 
 export type StreamUncheckedCreateWithoutMessagesInput = {
   id?: string
   title: string
-  userId?: string | null
+  accountId: string
 }
 
 export type StreamCreateOrConnectWithoutMessagesInput = {
@@ -397,13 +397,13 @@ export type StreamUpdateToOneWithWhereWithoutMessagesInput = {
 export type StreamUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneWithoutStreamsNestedInput
+  account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput
 }
 
 export type StreamUncheckedUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -440,8 +440,8 @@ export type StreamCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types
 export type StreamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  userId?: boolean
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  accountId?: boolean
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stream"]>
@@ -449,46 +449,46 @@ export type StreamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type StreamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  userId?: boolean
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  accountId?: boolean
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stream"]>
 
 export type StreamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  userId?: boolean
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  accountId?: boolean
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stream"]>
 
 export type StreamSelectScalar = {
   id?: boolean
   title?: boolean
-  userId?: boolean
+  accountId?: boolean
 }
 
-export type StreamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "userId", ExtArgs["result"]["stream"]>
+export type StreamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "accountId", ExtArgs["result"]["stream"]>
 export type StreamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StreamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }
 export type StreamIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Stream$userArgs<ExtArgs>
+  account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }
 
 export type $StreamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Stream"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs> | null
+    account: Prisma.$AccountPayload<ExtArgs>
     messages: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
-    userId: string | null
+    accountId: string
   }, ExtArgs["result"]["stream"]>
   composites: {}
 }
@@ -883,7 +883,7 @@ readonly fields: StreamFieldRefs;
  */
 export interface Prisma__StreamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.Stream$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stream$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  account<T extends Prisma.AccountDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AccountDefaultArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   messages<T extends Prisma.Stream$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stream$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -916,7 +916,7 @@ export interface Prisma__StreamClient<T, Null = never, ExtArgs extends runtime.T
 export interface StreamFieldRefs {
   readonly id: Prisma.FieldRef<"Stream", 'String'>
   readonly title: Prisma.FieldRef<"Stream", 'String'>
-  readonly userId: Prisma.FieldRef<"Stream", 'String'>
+  readonly accountId: Prisma.FieldRef<"Stream", 'String'>
 }
     
 
@@ -1315,25 +1315,6 @@ export type StreamDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Streams to delete.
    */
   limit?: number
-}
-
-/**
- * Stream.user
- */
-export type Stream$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the User
-   */
-  select?: Prisma.UserSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the User
-   */
-  omit?: Prisma.UserOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
 }
 
 /**

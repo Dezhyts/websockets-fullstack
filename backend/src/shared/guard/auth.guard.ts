@@ -22,13 +22,13 @@ export class AuthGuard implements CanActivate {
 
     if (!token) {
       throw new UnauthorizedException(
-        'Autherization token not found in cookies',
+        'Authorization token not found in cookies',
       );
     }
 
     try {
       const result = await this.jwtService.verifyAsync<JwtPayload>(token, {
-        secret: this.configService.getOrThrow<string>('JWT_SECRET'),
+        secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
       });
 
       request.user = result;
