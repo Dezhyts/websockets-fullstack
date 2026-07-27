@@ -42,7 +42,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.registerAccount(body);
-
     this.setRefreshToken(res, result.refreshToken);
 
     return {

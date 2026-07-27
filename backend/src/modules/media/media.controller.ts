@@ -13,10 +13,10 @@ import {
 import { GetTokenDto, IngressDto } from './dto/media.dto';
 import { MediaService } from './media.service';
 import { Roles } from '@shared/decorators/roles-decorator';
-import { Role } from '@shared/consts/roles.enum';
 import { StreamRoleGuard } from '@shared/guard/stream-role.guard';
 import { RawBody } from '@shared/decorators/raw-body.decorator';
 import type { Request } from 'express';
+import { Role } from '@prisma/generated/enums';
 
 @Controller('media')
 export class MediaController {
@@ -30,7 +30,7 @@ export class MediaController {
   ) {
     return this.mediaService.handleWebhook(rawBody, authHeader);
   }
-  @Roles(Role.STREAMER, Role.VIEWER)
+  @Roles(Role.STREAMER, Role.USER)
   @UseGuards(StreamRoleGuard)
   @Get('token')
   async getToken(@Query() query: GetTokenDto, @Req() req: Request) {

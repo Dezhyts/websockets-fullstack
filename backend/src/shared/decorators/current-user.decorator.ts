@@ -1,14 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JwtPayload } from '@shared/consts/jwt';
+import { Request } from 'express';
 
-interface RequestWithAccount extends Request {
-  user: JwtPayload;
-}
+export const CurrentUser = createParamDecorator((_, ctx: ExecutionContext) => {
+  const request = ctx.switchToHttp().getRequest<Request>();
 
-export const CurrentUser = createParamDecorator(
-  (data, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<RequestWithAccount>();
-
-    return request.user?.sub;
-  },
-);
+  return request.user?.sub;
+});

@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role } from '@shared/consts/roles.enum';
+import { Role } from '@prisma/generated/enums';
 import { ROLES_KEY } from '@shared/decorators/roles-decorator';
 import { Request } from 'express';
 
@@ -28,11 +28,9 @@ export class StreamRoleGuard implements CanActivate {
 
     if (!requiredRoles) return true;
 
-    const permission = user.role.some((userRole) =>
-      requiredRoles.includes(userRole),
-    );
+    const hasPermission = requiredRoles.includes(user.role);
 
-    if (!permission) {
+    if (!hasPermission) {
       throw new ForbiddenException('Has no permission');
     }
     request.canPublish = user.role.includes(Role.STREAMER);

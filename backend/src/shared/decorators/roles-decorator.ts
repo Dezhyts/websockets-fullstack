@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { Role } from '@shared/consts/roles.enum';
+import { Role } from '@prisma/generated/enums';
 
 export const ROLES_KEY = 'stream-roles';
 
