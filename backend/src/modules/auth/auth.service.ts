@@ -63,7 +63,7 @@ export class AuthService {
     await this.authRedisRepository.setRefreshToken(
       account.id,
       tokens.refreshToken,
-      this.configService.getOrThrow<number>('JWT_REFRESH_TTL_SECONDS'),
+      this.getTtlSeconds(),
     );
 
     return tokens;

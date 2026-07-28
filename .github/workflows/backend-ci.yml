@@ -8,6 +8,7 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
     paths: ['backend/**']
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,6 +31,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,28 +52,10 @@ jobs:
           npx prisma validate
           npx prisma generate
         working-directory: ./backend
-        env:
-          DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_test?schema=public'
 
-
-      - name: Check migrations
-        run: |
-          npx prisma migrate diff \
-          --from-migrations ./prisma/migrations \
-          --to-schema ./prisma/schema.prisma \
-          --exit-code
-        working-directory: ./backend
-
-      - name: Validate and Generate Prisma Client
-        run: |
-          npx prisma validate
-          npx prisma generate
-        working-directory: ./backend
-
-      - name: Run Prisma Migrations Test
+      - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         working-directory: ./backend
-
 
       - name: Build NestJS Application
         run: npm run build
