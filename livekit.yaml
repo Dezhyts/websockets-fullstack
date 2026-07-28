@@ -1,12 +1,10 @@
 port: 7880
 bind_addresses:
-  - ""
-
+  - ''
 rtc:
   tcp_port: 7881
-  udp_port_linear:
-    start: 50000
-    end: 50100
-
+  port_range_start: 50000
+  port_range_end: 50100
+  use_external_ip: false
 keys:
-  devkey: "super_secret_123_456"
+  devkey: 'super_secret_123_456_secure_string_12'

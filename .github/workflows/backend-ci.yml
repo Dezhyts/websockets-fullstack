@@ -23,6 +23,10 @@ jobs:
           - 5433:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
+    env:
+      DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_test?schema=public'
+      JWT_SECRET: 'test_secret_key'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,6 +52,26 @@ jobs:
         working-directory: ./backend
         env:
           DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_test?schema=public'
+
+
+      - name: Check migrations
+        run: |
+          npx prisma migrate diff \
+          --from-migrations ./prisma/migrations \
+          --to-schema-datamodel ./prisma/schema.prisma \
+          --exit-code
+        working-directory: ./backend
+
+      - name: Validate and Generate Prisma Client
+        run: |
+          npx prisma validate
+          npx prisma generate
+        working-directory: ./backend
+
+      - name: Run Prisma Migrations Test
+        run: npx prisma migrate deploy
+        working-directory: ./backend
+
 
       - name: Build NestJS Application
         run: npm run build

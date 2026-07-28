@@ -1,0 +1,26 @@
+{
+  "name": "websockets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dezhyts/websockets-fullstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Dezhyts/websockets-fullstack/issues"
+  },
+  "homepage": "https://github.com/Dezhyts/websockets-fullstack#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.2.0"
+  }
+}

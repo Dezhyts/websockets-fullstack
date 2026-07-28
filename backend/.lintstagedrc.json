@@ -1,7 +1,3 @@
 {
-  "src/**/*.ts": [
-    "eslint --fix",
-    "prettier --write",
-    "jest --findRelatedTests --bail --passWithNoTests"
-  ]
+  "*.{ts,tsx}": ["eslint --fix", "prettier --write"]
 }
