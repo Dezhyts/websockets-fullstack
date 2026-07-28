@@ -9,7 +9,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  await prisma.user.upsert({
+  await prisma.account.upsert({
     where: { email: 'vladis@gmail.com' },
     update: {},
     create: {
