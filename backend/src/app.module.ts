@@ -13,6 +13,7 @@ import { MediaModule } from './modules/media/media.module';
     }),
     ChatModule,
     PrismaModule,
+
     MediaModule,
   ],
   controllers: [],
