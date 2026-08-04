@@ -1,0 +1,96 @@
+name: websocket-fullstack
+
+services:
+  websockets-postgres:
+    image: postgres:16-alpine
+    container_name: websocket-postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER_AUTH}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD_AUTH}
+      POSTGRES_DB: ${DATABASE_NAME_AUTH}
+    ports:
+      - 5433:5432
+    volumes:
+      - websockets-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${DATABASE_USER_AUTH} -d ${DATABASE_NAME_AUTH}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - websockets-network
+  websockets-redis:
+    image: redis:7-alpine
+    container_name: redis-websockets
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    ports:
+      - '6379:6379'
+    volumes:
+      - websockets-redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping', '-a', '${REDIS_PASSWORD}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - websockets-network
+  livekit:
+    image: livekit/livekit-server:v1.8
+    command: --config /livekit.yaml
+    ports:
+      - '7880:7880'
+      - '7881:7881'
+      - '50000-50100:50000-50100/udp'
+    volumes:
+      - ./livekit.yaml:/livekit.yaml
+    restart: always
+    networks:
+      - websockets-network
+
+  livekit-ingress:
+    image: livekit/ingress:v1.2
+    container_name: livekit-ingress
+    restart: always
+    command: --config /ingress.yaml
+    volumes:
+      - ./ingress.yaml:/ingress.yaml
+    ports:
+      - '1935:1935'
+      - '7887:7887'
+    networks:
+      - websockets-network
+
+  postgres-backup:
+    image: prodrigestivill/postgres-backup-local:16-alpine
+    container_name: postgres-backup
+    restart: always
+    volumes:
+      - ./backups:/backups
+    environment:
+      - POSTGRES_HOST=websockets-postgres
+      - POSTGRES_USER=${DATABASE_USER_AUTH}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD_AUTH}
+      - POSTGRES_DB=${DATABASE_NAME_AUTH}
+
+      - POSTGRES_CLUSTER=TRUE
+      - POSTGRES_EXTRA_OPTS=
+      - SCHEDULE=@daily
+      - BACKUP_KEEP_DAYS=7
+      - POSTGRES_SUFFIX=_all_projects
+      - COMPRESS_LEVEL=0 
+      - BACKUP_UID=1000
+      - BACKUP_GID=1000
+    networks:
+      - websockets-network
+
+volumes:
+  websockets-postgres-data:
+  websockets-redis-data:
+
+networks:
+  websockets-network:
+    driver: bridge

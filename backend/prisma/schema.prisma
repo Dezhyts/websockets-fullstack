@@ -1,0 +1,59 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Account {
+  id       String @id @default(uuid())
+  username String @unique
+  email    String @unique
+  role     Role   @default(USER)
+
+  password String
+  avatar   String?
+
+  streams  Stream?
+  messages Message[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("accounts")
+}
+
+model Message {
+  id String @id @default(uuid())
+
+  stream   Stream @relation(fields: [streamId], references: [id])
+  streamId String
+
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  @@index([streamId, accountId])
+  @@map("messages")
+}
+
+model Stream {
+  id String @id @default(uuid())
+
+  title String
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @unique
+
+  messages Message[]
+
+  @@map("streams")
+}
+
+enum Role {
+  USER
+  STREAMER
+  ADMIN
+}

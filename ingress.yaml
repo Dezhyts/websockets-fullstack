@@ -1,0 +1,14 @@
+url: http://livekit:7880
+api_key: devkey
+api_secret: super_secret_livekit_key_1234567890
+
+http_relay_port: 9090
+http_relay_host: 127.0.0.1
+rtmp_base_url: rtmp://localhost:1935/x
+
+redis:
+  address: websockets-redis:6379
+  password: '12345'
+
+logging:
+  level: info
