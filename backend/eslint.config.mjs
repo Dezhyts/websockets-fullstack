@@ -10,6 +10,8 @@ export default tseslint.config(
       'node_modules',
       'dist',
       'prettier.config.mjs',
+      'src/test/k6/**',
+      'prisma/generated/**/*'
     ],
   },
   eslint.configs.recommended,
@@ -35,6 +37,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
       '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/unbound-method': 'off',
     },
   },
 );

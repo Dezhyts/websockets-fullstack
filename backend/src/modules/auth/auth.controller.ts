@@ -22,6 +22,7 @@ import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { AuthGuard } from '@shared/guard/auth.guard';
 import type { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import ms, { StringValue } from 'ms'; // 1. ДОБАВИЛИ ИМПОРТ MS
 
 @Controller('auth')
 export class AuthController {
@@ -34,9 +35,9 @@ export class AuthController {
     summary: 'User registration',
     description: 'User registration',
   })
-  @ApiResponse({ status: 200, type: RegisterDtoResponse })
+  @ApiResponse({ status: 201, type: RegisterDtoResponse })
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  @HttpCode(HttpStatus.OK)
   async register(
     @Body() body: RegisterDto,
     @Res({ passthrough: true }) res: Response,
@@ -55,6 +56,7 @@ export class AuthController {
     description: 'User registration',
   })
   @ApiResponse({ status: 200, type: LoginDtoResponse })
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
     @Body() body: LoginDto,
@@ -73,13 +75,14 @@ export class AuthController {
     summary: 'User registration',
     description: 'Refresh token',
   })
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, type: RefreshDtoResponse })
   @Post('refresh')
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const refreshToken = req.cookies?.['refreshToken'] as string | undefined;
+    const refreshToken = req.cookies?.['refreshToken'] as string;
 
     if (!refreshToken)
       throw new UnauthorizedException('Refresh token not found in cookies');
@@ -95,6 +98,7 @@ export class AuthController {
     description: 'Logout from account',
   })
   @ApiResponse({ status: 200, type: LogoutDtoResponse })
+  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Post('logout')
   logout(
@@ -112,11 +116,15 @@ export class AuthController {
   }
 
   private setRefreshToken(res: Response, refreshToken: string) {
+    const expiresIn = this.configService.getOrThrow<string>(
+      'JWT_REFRESH_EXPIRES_IN',
+    );
+
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: this.configService.getOrThrow('NODE_ENV') !== 'development',
       sameSite: 'lax',
-      maxAge: this.configService.getOrThrow<number>('JWT_REFRESH_EXPIRES_IN'),
+      maxAge: ms(expiresIn as StringValue),
     });
   }
 }

@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async registerAccount(data: RegisterDto) {
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const hashedPassword = await bcrypt.hash(data.password, 8);
 
     const account = await this.authRepository.createAccount({
       ...data,
@@ -121,20 +121,20 @@ export class AuthService {
       sub: payload.sub,
     };
 
-    const [accessToken, refreshToken] = [
-      await this.jwtService.signAsync(accessTokenPayload, {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(accessTokenPayload, {
         secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
         expiresIn: this.configService.getOrThrow<JwtSignOptions['expiresIn']>(
           'JWT_ACCESS_EXPIRES_IN',
         ),
       }),
-      await this.jwtService.signAsync(refreshTokenPayload, {
+      this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
         expiresIn: this.configService.getOrThrow<JwtSignOptions['expiresIn']>(
           'JWT_REFRESH_EXPIRES_IN',
         ),
       }),
-    ];
+    ]);
 
     return { accessToken, refreshToken };
   }

@@ -4,8 +4,10 @@ import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { RedisIoAdapter } from './infrastructure/redis-adapter/redis-adapter';
 import { getSwaggerConfig } from '@shared/config/swagger.config';
-import { getValidationPipe } from '@shared/config/validaton-pipe.config';
+import { getValidationPipe } from '@shared/config/validation-pipe.config';
 import cookieParser from 'cookie-parser';
+import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.interceptor';
+import { PrismaExceptionFilter } from '@shared/common/exception/prisma-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
@@ -26,6 +28,8 @@ async function bootstrap() {
   getSwaggerConfig(app);
 
   app.useGlobalPipes(new ValidationPipe(getValidationPipe()));
+  app.useGlobalInterceptors(new BenchmarkInterceptor());
+  app.useGlobalFilters(new PrismaExceptionFilter());
 
   await app.listen(port);
   logger.log(`App started on ${host}:${port}`);

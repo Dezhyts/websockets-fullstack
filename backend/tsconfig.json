@@ -21,13 +21,15 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "types": ["node", "jest"],
     "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types"],
     "paths": {
-      "@prisma/generated": ["./prisma/generated"],
       "@prisma/generated/*": ["./prisma/generated/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
       "@shared/*": ["./src/shared/*"]
     }
-  }
+  },
+  "include": ["src/**/*", "test/**/*", "**/*spec.ts"],
+  "exclude": ["node_modules", "dist", "k6/**/*"]
 }

@@ -19,9 +19,9 @@ export class AuthRedisRepository {
 
     return await this.redisService.client.get(key);
   }
-  public async deleteRefreshToken(userId: string) {
+  public async deleteRefreshToken(userId: string): Promise<void> {
     const key = `auth:refreshToken:${userId}`;
 
-    return await this.redisService.client.del(key);
+    await this.redisService.client.del(key);
   }
 }
