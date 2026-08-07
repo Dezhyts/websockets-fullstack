@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -12,9 +12,17 @@ import { ChatService } from './chat.service';
 import { JoinStreamDto, LeaveStreamDto, SendMessageDto } from './dto/chat-dto';
 import type { AuthenticatedSocket } from './types/chat.types';
 import { ApiExtraModels } from '@nestjs/swagger';
+import { CurrentUser } from '@shared/decorators/current-user.decorator';
+import { AuthGuard } from '@shared/guard/auth.guard';
 
 @ApiExtraModels(JoinStreamDto, LeaveStreamDto, SendMessageDto)
-@WebSocketGateway()
+@WebSocketGateway({
+  namespace: '/chat',
+  cors: {
+    origin: '*',
+    credentials: true,
+  },
+})
 export class ChatGateway {
   constructor(private readonly chatService: ChatService) {}
 
@@ -24,11 +32,6 @@ export class ChatGateway {
 
   handleConnection(client: AuthenticatedSocket) {
     this.logger.log(`Client connected: ${client.id}`);
-
-    client.user = {
-      id: 'test',
-      username: 'alex',
-    };
   }
 
   handleDisconnect(client: AuthenticatedSocket) {
@@ -36,7 +39,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('join_stream')
-  handleJoinStream(
+  async handleJoinStream(
     @MessageBody()
     payload: JoinStreamDto,
     @ConnectedSocket() client: AuthenticatedSocket,
@@ -45,12 +48,16 @@ export class ChatGateway {
 
     void client.join(room);
 
-    client
-      .to(room)
-      .emit(
-        'user_joined',
-        this.chatService.buildUserJoinedPayload(client.user),
-      );
+    if (client.user) {
+      client
+        .to(room)
+        .emit(
+          'user_joined',
+          this.chatService.buildUserJoinedPayload(client.user),
+        );
+    }
+
+    return await this.chatService.getHistoryMessageFromUser(payload);
   }
 
   @SubscribeMessage('leave_stream')
@@ -65,18 +72,25 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('send_message')
-  handleSendMessage(
+  @UseGuards(AuthGuard)
+  async handleSendMessage(
     @MessageBody()
     payload: SendMessageDto,
     @ConnectedSocket() client: AuthenticatedSocket,
+    @CurrentUser('sub') userId: string,
   ) {
+    this.logger.log(
+      `Sending message... userId=${userId}, payload=${JSON.stringify(payload)}`,
+    );
+
     const room = this.chatService.getRoom(payload.streamId);
 
-    this.server
-      .to(room)
-      .emit(
-        'message',
-        this.chatService.buildMessagePayload(client.user, payload.message),
-      );
+    const messagePayload = await this.chatService.createAndSaveMessage(
+      payload,
+      userId,
+    );
+    this.server.to(room).emit('message', messagePayload);
+
+    this.logger.log('Message saved successfully');
   }
 }

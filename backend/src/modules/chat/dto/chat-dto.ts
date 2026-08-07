@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class JoinStreamDto {
   @ApiProperty({
@@ -9,6 +16,17 @@ export class JoinStreamDto {
   @IsNotEmpty()
   @IsString()
   streamId: string;
+
+  @ApiProperty({
+    description: 'Number of messages to get',
+    example: 20,
+    type: 'number',
+  })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(50)
+  limit: number = 20;
 }
 
 export class LeaveStreamDto {

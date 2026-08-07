@@ -53,10 +53,20 @@ jobs:
           npx prisma generate
         working-directory: ./backend
 
+      - name: Load Staging Schema Snapshot Test
+        run: |
+          docker exec ${{ job.services.postgres.id }} pg_isready -U postgres
+          docker exec -i ${{ job.services.postgres.id }} psql -U postgres -d websockets_test < ./prisma/staging-snapshot.sql
+        working-directory: ./backend
+
       - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         working-directory: ./backend
 
       - name: Build NestJS Application
         run: npm run build
+        working-directory: ./backend
+
+      - name: Check for missing migrations
+        run: npx prisma migrate diff --from-migrations ./prisma/migrations --to-schema ./prisma/schema.prisma --exit-code
         working-directory: ./backend

@@ -91,8 +91,10 @@ export type AccountScalarFieldEnum =
 
 export const MessageScalarFieldEnum = {
   id: 'id',
+  text: 'text',
   streamId: 'streamId',
   accountId: 'accountId',
+  createdAt: 'createdAt',
 } as const;
 
 export type MessageScalarFieldEnum =
@@ -102,6 +104,8 @@ export const StreamScalarFieldEnum = {
   id: 'id',
   title: 'title',
   accountId: 'accountId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type StreamScalarFieldEnum =

@@ -26,39 +26,51 @@ export type AggregateMessage = {
 
 export type MessageMinAggregateOutputType = {
   id: string | null;
+  text: string | null;
   streamId: string | null;
   accountId: string | null;
+  createdAt: Date | null;
 };
 
 export type MessageMaxAggregateOutputType = {
   id: string | null;
+  text: string | null;
   streamId: string | null;
   accountId: string | null;
+  createdAt: Date | null;
 };
 
 export type MessageCountAggregateOutputType = {
   id: number;
+  text: number;
   streamId: number;
   accountId: number;
+  createdAt: number;
   _all: number;
 };
 
 export type MessageMinAggregateInputType = {
   id?: true;
+  text?: true;
   streamId?: true;
   accountId?: true;
+  createdAt?: true;
 };
 
 export type MessageMaxAggregateInputType = {
   id?: true;
+  text?: true;
   streamId?: true;
   accountId?: true;
+  createdAt?: true;
 };
 
 export type MessageCountAggregateInputType = {
   id?: true;
+  text?: true;
   streamId?: true;
   accountId?: true;
+  createdAt?: true;
   _all?: true;
 };
 
@@ -143,8 +155,10 @@ export type MessageGroupByArgs<
 
 export type MessageGroupByOutputType = {
   id: string;
+  text: string | null;
   streamId: string;
   accountId: string | null;
+  createdAt: Date;
   _count: MessageCountAggregateOutputType | null;
   _min: MessageMinAggregateOutputType | null;
   _max: MessageMaxAggregateOutputType | null;
@@ -168,8 +182,10 @@ export type MessageWhereInput = {
   OR?: Prisma.MessageWhereInput[];
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[];
   id?: Prisma.StringFilter<'Message'> | string;
+  text?: Prisma.StringNullableFilter<'Message'> | string | null;
   streamId?: Prisma.StringFilter<'Message'> | string;
   accountId?: Prisma.StringNullableFilter<'Message'> | string | null;
+  createdAt?: Prisma.DateTimeFilter<'Message'> | Date | string;
   stream?: Prisma.XOR<
     Prisma.StreamScalarRelationFilter,
     Prisma.StreamWhereInput
@@ -182,8 +198,10 @@ export type MessageWhereInput = {
 
 export type MessageOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
+  text?: Prisma.SortOrderInput | Prisma.SortOrder;
   streamId?: Prisma.SortOrder;
   accountId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
   stream?: Prisma.StreamOrderByWithRelationInput;
   account?: Prisma.AccountOrderByWithRelationInput;
 };
@@ -194,8 +212,10 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<
     AND?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[];
     OR?: Prisma.MessageWhereInput[];
     NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[];
+    text?: Prisma.StringNullableFilter<'Message'> | string | null;
     streamId?: Prisma.StringFilter<'Message'> | string;
     accountId?: Prisma.StringNullableFilter<'Message'> | string | null;
+    createdAt?: Prisma.DateTimeFilter<'Message'> | Date | string;
     stream?: Prisma.XOR<
       Prisma.StreamScalarRelationFilter,
       Prisma.StreamWhereInput
@@ -210,8 +230,10 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<
 
 export type MessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
+  text?: Prisma.SortOrderInput | Prisma.SortOrder;
   streamId?: Prisma.SortOrder;
   accountId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
   _count?: Prisma.MessageCountOrderByAggregateInput;
   _max?: Prisma.MessageMaxOrderByAggregateInput;
   _min?: Prisma.MessageMinOrderByAggregateInput;
@@ -226,49 +248,65 @@ export type MessageScalarWhereWithAggregatesInput = {
     | Prisma.MessageScalarWhereWithAggregatesInput
     | Prisma.MessageScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'Message'> | string;
+  text?: Prisma.StringNullableWithAggregatesFilter<'Message'> | string | null;
   streamId?: Prisma.StringWithAggregatesFilter<'Message'> | string;
   accountId?:
     Prisma.StringNullableWithAggregatesFilter<'Message'> | string | null;
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<'Message'> | Date | string;
 };
 
 export type MessageCreateInput = {
   id?: string;
+  text?: string | null;
+  createdAt?: Date | string;
   stream: Prisma.StreamCreateNestedOneWithoutMessagesInput;
   account?: Prisma.AccountCreateNestedOneWithoutMessagesInput;
 };
 
 export type MessageUncheckedCreateInput = {
   id?: string;
+  text?: string | null;
   streamId: string;
   accountId?: string | null;
+  createdAt?: Date | string;
 };
 
 export type MessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   stream?: Prisma.StreamUpdateOneRequiredWithoutMessagesNestedInput;
   account?: Prisma.AccountUpdateOneWithoutMessagesNestedInput;
 };
 
 export type MessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   streamId?: Prisma.StringFieldUpdateOperationsInput | string;
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageCreateManyInput = {
   id?: string;
+  text?: string | null;
   streamId: string;
   accountId?: string | null;
+  createdAt?: Date | string;
 };
 
 export type MessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   streamId?: Prisma.StringFieldUpdateOperationsInput | string;
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageListRelationFilter = {
@@ -283,20 +321,26 @@ export type MessageOrderByRelationAggregateInput = {
 
 export type MessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  text?: Prisma.SortOrder;
   streamId?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
 };
 
 export type MessageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  text?: Prisma.SortOrder;
   streamId?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
 };
 
 export type MessageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  text?: Prisma.SortOrder;
   streamId?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
 };
 
 export type MessageCreateNestedManyWithoutAccountInput = {
@@ -481,12 +525,16 @@ export type MessageUncheckedUpdateManyWithoutStreamNestedInput = {
 
 export type MessageCreateWithoutAccountInput = {
   id?: string;
+  text?: string | null;
+  createdAt?: Date | string;
   stream: Prisma.StreamCreateNestedOneWithoutMessagesInput;
 };
 
 export type MessageUncheckedCreateWithoutAccountInput = {
   id?: string;
+  text?: string | null;
   streamId: string;
+  createdAt?: Date | string;
 };
 
 export type MessageCreateOrConnectWithoutAccountInput = {
@@ -537,18 +585,24 @@ export type MessageScalarWhereInput = {
   OR?: Prisma.MessageScalarWhereInput[];
   NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[];
   id?: Prisma.StringFilter<'Message'> | string;
+  text?: Prisma.StringNullableFilter<'Message'> | string | null;
   streamId?: Prisma.StringFilter<'Message'> | string;
   accountId?: Prisma.StringNullableFilter<'Message'> | string | null;
+  createdAt?: Prisma.DateTimeFilter<'Message'> | Date | string;
 };
 
 export type MessageCreateWithoutStreamInput = {
   id?: string;
+  text?: string | null;
+  createdAt?: Date | string;
   account?: Prisma.AccountCreateNestedOneWithoutMessagesInput;
 };
 
 export type MessageUncheckedCreateWithoutStreamInput = {
   id?: string;
+  text?: string | null;
   accountId?: string | null;
+  createdAt?: Date | string;
 };
 
 export type MessageCreateOrConnectWithoutStreamInput = {
@@ -595,42 +649,58 @@ export type MessageUpdateManyWithWhereWithoutStreamInput = {
 
 export type MessageCreateManyAccountInput = {
   id?: string;
+  text?: string | null;
   streamId: string;
+  createdAt?: Date | string;
 };
 
 export type MessageUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   stream?: Prisma.StreamUpdateOneRequiredWithoutMessagesNestedInput;
 };
 
 export type MessageUncheckedUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   streamId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageUncheckedUpdateManyWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   streamId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageCreateManyStreamInput = {
   id?: string;
+  text?: string | null;
   accountId?: string | null;
+  createdAt?: Date | string;
 };
 
 export type MessageUpdateWithoutStreamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   account?: Prisma.AccountUpdateOneWithoutMessagesNestedInput;
 };
 
 export type MessageUncheckedUpdateWithoutStreamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageUncheckedUpdateManyWithoutStreamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type MessageSelect<
@@ -639,8 +709,10 @@ export type MessageSelect<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    text?: boolean;
     streamId?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
     stream?: boolean | Prisma.StreamDefaultArgs<ExtArgs>;
     account?: boolean | Prisma.Message$accountArgs<ExtArgs>;
   },
@@ -653,8 +725,10 @@ export type MessageSelectCreateManyAndReturn<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    text?: boolean;
     streamId?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
     stream?: boolean | Prisma.StreamDefaultArgs<ExtArgs>;
     account?: boolean | Prisma.Message$accountArgs<ExtArgs>;
   },
@@ -667,8 +741,10 @@ export type MessageSelectUpdateManyAndReturn<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    text?: boolean;
     streamId?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
     stream?: boolean | Prisma.StreamDefaultArgs<ExtArgs>;
     account?: boolean | Prisma.Message$accountArgs<ExtArgs>;
   },
@@ -677,15 +753,17 @@ export type MessageSelectUpdateManyAndReturn<
 
 export type MessageSelectScalar = {
   id?: boolean;
+  text?: boolean;
   streamId?: boolean;
   accountId?: boolean;
+  createdAt?: boolean;
 };
 
 export type MessageOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'streamId' | 'accountId',
+  'id' | 'text' | 'streamId' | 'accountId' | 'createdAt',
   ExtArgs['result']['message']
 >;
 export type MessageInclude<
@@ -722,8 +800,10 @@ export type $MessagePayload<
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       id: string;
+      text: string | null;
       streamId: string;
       accountId: string | null;
+      createdAt: Date;
     },
     ExtArgs['result']['message']
   >;
@@ -1338,8 +1418,10 @@ export interface Prisma__MessageClient<
  */
 export interface MessageFieldRefs {
   readonly id: Prisma.FieldRef<'Message', 'String'>;
+  readonly text: Prisma.FieldRef<'Message', 'String'>;
   readonly streamId: Prisma.FieldRef<'Message', 'String'>;
   readonly accountId: Prisma.FieldRef<'Message', 'String'>;
+  readonly createdAt: Prisma.FieldRef<'Message', 'DateTime'>;
 }
 
 // Custom InputTypes

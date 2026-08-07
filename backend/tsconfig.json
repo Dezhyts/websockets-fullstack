@@ -27,9 +27,10 @@
     "paths": {
       "@prisma/generated/*": ["./prisma/generated/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*", "**/*spec.ts"],
+  "include": ["src/**/*", "test/**/*", "**/*spec.ts", "prisma.config.ts"],
   "exclude": ["node_modules", "dist", "k6/**/*"]
 }

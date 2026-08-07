@@ -9,21 +9,47 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@shared/consts/jwt';
 import { Request } from 'express';
 
+import { Socket } from 'socket.io';
+
+interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
+}
+
+interface AuthenticatedSocket extends Socket {
+  user?: JwtPayload;
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request>();
 
-    const token = request.cookies?.['access_token'] as string | undefined;
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    let token: string | undefined;
+    let targetObject: AuthenticatedRequest | AuthenticatedSocket;
+
+    if (context.getType() === 'ws') {
+      const client = context.switchToWs().getClient<AuthenticatedSocket>();
+      targetObject = client;
+
+      token =
+        (client.handshake?.headers?.token as string | undefined) ||
+        (client.handshake?.query?.token as string | undefined) ||
+        client.handshake?.headers?.['authorization'];
+
+      if (token && token.startsWith('Bearer ')) {
+        token = token.split(' ')[1];
+      }
+    } else {
+      const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+      targetObject = request;
+      token = request.cookies?.['access_token'] as string | undefined;
+    }
 
     if (!token) {
-      throw new UnauthorizedException(
-        'Authorization token not found in cookies',
-      );
+      throw new UnauthorizedException('Authorization token not found');
     }
 
     try {
@@ -31,7 +57,7 @@ export class AuthGuard implements CanActivate {
         secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
       });
 
-      request.user = result;
+      targetObject.user = result;
 
       return true;
     } catch {

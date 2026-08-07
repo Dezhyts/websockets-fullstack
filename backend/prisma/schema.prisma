@@ -6,6 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+
 }
 
 model Account {
@@ -27,13 +28,16 @@ model Account {
 }
 
 model Message {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
+  text String?
 
   stream   Stream @relation(fields: [streamId], references: [id])
   streamId String
 
   account   Account? @relation(fields: [accountId], references: [id])
   accountId String?
+
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@index([streamId, accountId])
   @@map("messages")
@@ -47,7 +51,9 @@ model Stream {
   account   Account @relation(fields: [accountId], references: [id])
   accountId String  @unique
 
-  messages Message[]
+  messages  Message[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("streams")
 }

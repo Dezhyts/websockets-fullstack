@@ -28,18 +28,24 @@ export type StreamMinAggregateOutputType = {
   id: string | null;
   title: string | null;
   accountId: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 export type StreamMaxAggregateOutputType = {
   id: string | null;
   title: string | null;
   accountId: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 export type StreamCountAggregateOutputType = {
   id: number;
   title: number;
   accountId: number;
+  createdAt: number;
+  updatedAt: number;
   _all: number;
 };
 
@@ -47,18 +53,24 @@ export type StreamMinAggregateInputType = {
   id?: true;
   title?: true;
   accountId?: true;
+  createdAt?: true;
+  updatedAt?: true;
 };
 
 export type StreamMaxAggregateInputType = {
   id?: true;
   title?: true;
   accountId?: true;
+  createdAt?: true;
+  updatedAt?: true;
 };
 
 export type StreamCountAggregateInputType = {
   id?: true;
   title?: true;
   accountId?: true;
+  createdAt?: true;
+  updatedAt?: true;
   _all?: true;
 };
 
@@ -145,6 +157,8 @@ export type StreamGroupByOutputType = {
   id: string;
   title: string;
   accountId: string;
+  createdAt: Date;
+  updatedAt: Date;
   _count: StreamCountAggregateOutputType | null;
   _min: StreamMinAggregateOutputType | null;
   _max: StreamMaxAggregateOutputType | null;
@@ -170,6 +184,8 @@ export type StreamWhereInput = {
   id?: Prisma.StringFilter<'Stream'> | string;
   title?: Prisma.StringFilter<'Stream'> | string;
   accountId?: Prisma.StringFilter<'Stream'> | string;
+  createdAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
+  updatedAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
   account?: Prisma.XOR<
     Prisma.AccountScalarRelationFilter,
     Prisma.AccountWhereInput
@@ -181,6 +197,8 @@ export type StreamOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   title?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
   account?: Prisma.AccountOrderByWithRelationInput;
   messages?: Prisma.MessageOrderByRelationAggregateInput;
 };
@@ -193,6 +211,8 @@ export type StreamWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.StreamWhereInput[];
     NOT?: Prisma.StreamWhereInput | Prisma.StreamWhereInput[];
     title?: Prisma.StringFilter<'Stream'> | string;
+    createdAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
     account?: Prisma.XOR<
       Prisma.AccountScalarRelationFilter,
       Prisma.AccountWhereInput
@@ -206,6 +226,8 @@ export type StreamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
   title?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
   _count?: Prisma.StreamCountOrderByAggregateInput;
   _max?: Prisma.StreamMaxOrderByAggregateInput;
   _min?: Prisma.StreamMinOrderByAggregateInput;
@@ -222,11 +244,15 @@ export type StreamScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<'Stream'> | string;
   title?: Prisma.StringWithAggregatesFilter<'Stream'> | string;
   accountId?: Prisma.StringWithAggregatesFilter<'Stream'> | string;
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<'Stream'> | Date | string;
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<'Stream'> | Date | string;
 };
 
 export type StreamCreateInput = {
   id?: string;
   title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
 };
@@ -235,12 +261,16 @@ export type StreamUncheckedCreateInput = {
   id?: string;
   title: string;
   accountId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
 };
@@ -249,6 +279,8 @@ export type StreamUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
@@ -256,17 +288,23 @@ export type StreamCreateManyInput = {
   id?: string;
   title: string;
   accountId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 export type StreamUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type StreamUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type StreamNullableScalarRelationFilter = {
@@ -283,18 +321,24 @@ export type StreamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   title?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type StreamMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   title?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type StreamMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   title?: Prisma.SortOrder;
   accountId?: Prisma.SortOrder;
+  createdAt?: Prisma.SortOrder;
+  updatedAt?: Prisma.SortOrder;
 };
 
 export type StreamCreateNestedOneWithoutAccountInput = {
@@ -382,12 +426,16 @@ export type StreamUpdateOneRequiredWithoutMessagesNestedInput = {
 export type StreamCreateWithoutAccountInput = {
   id?: string;
   title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutAccountInput = {
   id?: string;
   title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
 };
 
@@ -422,18 +470,24 @@ export type StreamUpdateToOneWithWhereWithoutAccountInput = {
 export type StreamUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateWithoutMessagesInput = {
   id?: string;
   title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
 };
 
@@ -441,6 +495,8 @@ export type StreamUncheckedCreateWithoutMessagesInput = {
   id?: string;
   title: string;
   accountId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 export type StreamCreateOrConnectWithoutMessagesInput = {
@@ -474,6 +530,8 @@ export type StreamUpdateToOneWithWhereWithoutMessagesInput = {
 export type StreamUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
 };
 
@@ -481,6 +539,8 @@ export type StreamUncheckedUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 /**
@@ -529,6 +589,8 @@ export type StreamSelect<
     id?: boolean;
     title?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
     messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>;
     _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>;
@@ -544,6 +606,8 @@ export type StreamSelectCreateManyAndReturn<
     id?: boolean;
     title?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -557,6 +621,8 @@ export type StreamSelectUpdateManyAndReturn<
     id?: boolean;
     title?: boolean;
     accountId?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -566,13 +632,15 @@ export type StreamSelectScalar = {
   id?: boolean;
   title?: boolean;
   accountId?: boolean;
+  createdAt?: boolean;
+  updatedAt?: boolean;
 };
 
 export type StreamOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'title' | 'accountId',
+  'id' | 'title' | 'accountId' | 'createdAt' | 'updatedAt',
   ExtArgs['result']['stream']
 >;
 export type StreamInclude<
@@ -610,6 +678,8 @@ export type $StreamPayload<
       id: string;
       title: string;
       accountId: string;
+      createdAt: Date;
+      updatedAt: Date;
     },
     ExtArgs['result']['stream']
   >;
@@ -1224,6 +1294,8 @@ export interface StreamFieldRefs {
   readonly id: Prisma.FieldRef<'Stream', 'String'>;
   readonly title: Prisma.FieldRef<'Stream', 'String'>;
   readonly accountId: Prisma.FieldRef<'Stream', 'String'>;
+  readonly createdAt: Prisma.FieldRef<'Stream', 'DateTime'>;
+  readonly updatedAt: Prisma.FieldRef<'Stream', 'DateTime'>;
 }
 
 // Custom InputTypes

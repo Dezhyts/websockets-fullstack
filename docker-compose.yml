@@ -54,7 +54,6 @@ services:
   livekit-ingress:
     image: livekit/ingress:v1.2
     container_name: livekit-ingress
-    restart: always
     command: --config /ingress.yaml
     volumes:
       - ./ingress.yaml:/ingress.yaml

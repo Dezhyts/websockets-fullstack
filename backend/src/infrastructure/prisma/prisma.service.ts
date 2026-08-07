@@ -23,7 +23,7 @@ export class PrismaService
       port: configService.getOrThrow<number>('DATABASE_PORT_AUTH'),
       database: configService.getOrThrow<string>('DATABASE_NAME_AUTH'),
     });
-    super({ adapter });
+    super({ adapter, log: [{ emit: 'event', level: 'query' }] });
   }
 
   public async onModuleInit() {
