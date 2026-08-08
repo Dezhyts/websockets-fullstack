@@ -54,12 +54,6 @@ jobs:
           npx prisma generate
         working-directory: ./backend
 
-      - name: Load Staging Schema Snapshot Test
-        run: |
-          docker exec ${{ job.services.postgres.id }} pg_isready -U postgres
-          docker exec -i ${{ job.services.postgres.id }} psql -U postgres -d websockets_test < ./prisma/staging-snapshot.sql
-        working-directory: ./backend
-
       - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         working-directory: ./backend
