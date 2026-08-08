@@ -28,7 +28,6 @@ async function bootstrap() {
   getSwaggerConfig(app);
 
   app.useGlobalPipes(new ValidationPipe(getValidationPipe()));
-  app.useGlobalInterceptors(new BenchmarkInterceptor());
   app.useGlobalFilters(new PrismaExceptionFilter());
 
   await app.listen(port);

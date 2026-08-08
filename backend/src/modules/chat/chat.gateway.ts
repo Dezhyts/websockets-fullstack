@@ -1,4 +1,4 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -10,10 +10,11 @@ import { Server, Socket } from 'socket.io';
 
 import { ChatService } from './chat.service';
 import { JoinStreamDto, LeaveStreamDto, SendMessageDto } from './dto/chat-dto';
-import type { AuthenticatedSocket } from './types/chat.types';
 import { ApiExtraModels } from '@nestjs/swagger';
 import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { AuthGuard } from '@shared/guard/auth.guard';
+import { OptionalWsAuthGuard } from '@shared/guard/optional.auth.guard';
+import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.interceptor';
 
 @ApiExtraModels(JoinStreamDto, LeaveStreamDto, SendMessageDto)
 @WebSocketGateway({
@@ -30,31 +31,38 @@ export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  handleConnection(client: AuthenticatedSocket) {
+  handleConnection(client: Socket) {
     this.logger.log(`Client connected: ${client.id}`);
   }
 
-  handleDisconnect(client: AuthenticatedSocket) {
+  handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('join_stream')
+  @UseGuards(OptionalWsAuthGuard)
+  @UseInterceptors(BenchmarkInterceptor)
   async handleJoinStream(
     @MessageBody()
     payload: JoinStreamDto,
-    @ConnectedSocket() client: AuthenticatedSocket,
+    @ConnectedSocket() client: Socket,
+    @CurrentUser('sub') userId: string,
   ) {
     const room = this.chatService.getRoom(payload.streamId);
-
     void client.join(room);
 
+    const account = userId
+      ? await this.chatService.getAccountById(userId)
+      : undefined;
+
     if (client.user) {
-      client
-        .to(room)
-        .emit(
-          'user_joined',
-          this.chatService.buildUserJoinedPayload(client.user),
-        );
+      client.to(room).emit(
+        'user_joined',
+        this.chatService.buildUserJoinedPayload({
+          id: userId,
+          username: account?.username ?? 'Guest',
+        }),
+      );
     }
 
     return await this.chatService.getHistoryMessageFromUser(payload);
@@ -76,7 +84,7 @@ export class ChatGateway {
   async handleSendMessage(
     @MessageBody()
     payload: SendMessageDto,
-    @ConnectedSocket() client: AuthenticatedSocket,
+    @ConnectedSocket() client: Socket,
     @CurrentUser('sub') userId: string,
   ) {
     this.logger.log(

@@ -8,16 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@shared/consts/jwt';
 import { Request } from 'express';
-
 import { Socket } from 'socket.io';
-
-interface AuthenticatedRequest extends Request {
-  user?: JwtPayload;
-}
-
-interface AuthenticatedSocket extends Socket {
-  user?: JwtPayload;
-}
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -28,10 +19,10 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     let token: string | undefined;
-    let targetObject: AuthenticatedRequest | AuthenticatedSocket;
+    let targetObject: Request | Socket;
 
     if (context.getType() === 'ws') {
-      const client = context.switchToWs().getClient<AuthenticatedSocket>();
+      const client = context.switchToWs().getClient<Socket>();
       targetObject = client;
 
       token =
@@ -43,7 +34,7 @@ export class AuthGuard implements CanActivate {
         token = token.split(' ')[1];
       }
     } else {
-      const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+      const request = context.switchToHttp().getRequest<Request>();
       targetObject = request;
       token = request.cookies?.['access_token'] as string | undefined;
     }

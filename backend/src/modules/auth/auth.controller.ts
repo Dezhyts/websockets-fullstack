@@ -22,7 +22,7 @@ import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { AuthGuard } from '@shared/guard/auth.guard';
 import type { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import ms, { StringValue } from 'ms'; // 1. ДОБАВИЛИ ИМПОРТ MS
+import ms, { StringValue } from 'ms';
 
 @Controller('auth')
 export class AuthController {

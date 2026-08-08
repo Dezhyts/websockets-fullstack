@@ -7,6 +7,8 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { MediaModule } from './modules/media/media.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.interceptor';
 
 @Module({
   imports: [
@@ -29,6 +31,11 @@ import { MediaModule } from './modules/media/media.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: BenchmarkInterceptor,
+    },
+  ],
 })
 export class AppModule {}

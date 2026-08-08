@@ -1,6 +1,6 @@
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Message, Prisma } from '@prisma/generated/client';
+import { Prisma } from '@prisma/generated/client';
 import { MessageCreateInput } from '@prisma/generated/models';
 
 export type MessageWithAccount = Prisma.MessageGetPayload<{
@@ -29,14 +29,21 @@ export class ChatRepository {
   async getMessagesByStream(
     streamId: string,
     limit: number,
+    cursor?: string,
   ): Promise<MessageWithAccount[] | null> {
     return this.prismaService.message.findMany({
       where: {
         streamId,
       },
       take: limit,
+      skip: 1,
+      ...(cursor && {
+        cursor: {
+          id: cursor,
+        },
+      }),
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
       include: {
         account: {
@@ -45,6 +52,14 @@ export class ChatRepository {
             username: true,
           },
         },
+      },
+    });
+  }
+
+  async getAccountById(userId: string) {
+    return await this.prismaService.account.findUnique({
+      where: {
+        id: userId,
       },
     });
   }

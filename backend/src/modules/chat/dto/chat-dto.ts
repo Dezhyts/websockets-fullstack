@@ -7,6 +7,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class JoinStreamDto {
   @ApiProperty({
@@ -26,7 +27,16 @@ export class JoinStreamDto {
   @IsInt()
   @Min(1)
   @Max(50)
-  limit: number = 20;
+  @Type(() => Number)
+  limit: number;
+
+  @ApiProperty({
+    description: 'Cursor for pagination',
+    example: 'a5e8494c-83b4-4e48-8dfa-80c10b27f12e',
+  })
+  @IsOptional()
+  @IsString()
+  cursor?: string;
 }
 
 export class LeaveStreamDto {

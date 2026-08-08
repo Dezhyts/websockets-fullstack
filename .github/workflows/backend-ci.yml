@@ -26,6 +26,7 @@ jobs:
 
     env:
       DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_test?schema=public'
+      SHADOW_DATABASE_URL: 'postgresql://postgres:super_test_pass@localhost:5433/websockets_shadow_test?schema=public'
       JWT_SECRET: 'test_secret_key'
 
     steps:
