@@ -54,6 +54,11 @@ jobs:
           npx prisma generate
         working-directory: ./backend
 
+      - name: Create shadow database
+        run: |
+          docker exec ${{ job.services.postgres.id }} pg_isready -U postgres
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -c "CREATE DATABASE websockets_shadow_test;"
+
       - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         working-directory: ./backend
