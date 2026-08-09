@@ -12,7 +12,6 @@ import { Socket } from 'socket.io';
 export class BenchmarkInterceptor implements NestInterceptor {
   private readonly logger = new Logger(BenchmarkInterceptor.name);
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    console.log('>>> INTERCEPTOR CALLED, type:', context.getType());
     const start = performance.now();
 
     const type = context.getType();

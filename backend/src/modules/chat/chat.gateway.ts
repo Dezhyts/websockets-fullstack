@@ -46,59 +46,71 @@ export class ChatGateway {
     @MessageBody()
     payload: JoinStreamDto,
     @ConnectedSocket() client: Socket,
-    @CurrentUser('sub') userId: string,
+    @CurrentUser('sub') userId?: string,
   ) {
-    const room = this.chatService.getRoom(payload.streamId);
-    void client.join(room);
+    try {
+      const room = this.chatService.getRoom(payload.streamId);
+      void client.join(room);
 
-    const account = userId
-      ? await this.chatService.getAccountById(userId)
-      : undefined;
+      const account = userId
+        ? await this.chatService.getAccountById(userId)
+        : undefined;
 
-    if (client.user) {
-      client.to(room).emit(
-        'user_joined',
-        this.chatService.buildUserJoinedPayload({
-          id: userId,
-          username: account?.username ?? 'Guest',
-        }),
-      );
+      if (userId) {
+        client.to(room).emit(
+          'user_joined',
+          this.chatService.buildUserJoinedPayload({
+            id: userId,
+            username: account?.username ?? 'Guest',
+          }),
+        );
+      }
+
+      const history = await this.chatService.getHistoryMessageFromUser(payload);
+
+      client.emit('history', history);
+    } catch (error) {
+      this.logger.error(`Failed to join stream: ${error}`);
+      client.emit('error', { message: 'join stream error' });
     }
-
-    return await this.chatService.getHistoryMessageFromUser(payload);
   }
 
   @SubscribeMessage('leave_stream')
+  @UseInterceptors(BenchmarkInterceptor)
   handleLeaveStream(
     @MessageBody()
     payload: LeaveStreamDto,
     @ConnectedSocket() client: Socket,
   ) {
-    const room = this.chatService.getRoom(payload.streamId);
-
-    void client.leave(room);
+    try {
+      const room = this.chatService.getRoom(payload.streamId);
+      void client.leave(room);
+    } catch (error) {
+      this.logger.error(`Failed to leave stream: ${error}`);
+      client.emit('error', { message: 'leave stream error' });
+    }
   }
 
   @SubscribeMessage('send_message')
+  @UseInterceptors(BenchmarkInterceptor)
   @UseGuards(AuthGuard)
   async handleSendMessage(
     @MessageBody()
     payload: SendMessageDto,
-    @ConnectedSocket() client: Socket,
     @CurrentUser('sub') userId: string,
+    @ConnectedSocket() client: Socket,
   ) {
-    this.logger.log(
-      `Sending message... userId=${userId}, payload=${JSON.stringify(payload)}`,
-    );
-
-    const room = this.chatService.getRoom(payload.streamId);
-
-    const messagePayload = await this.chatService.createAndSaveMessage(
-      payload,
-      userId,
-    );
-    this.server.to(room).emit('message', messagePayload);
-
-    this.logger.log('Message saved successfully');
+    try {
+      const room = this.chatService.getRoom(payload.streamId);
+      const messagePayload = await this.chatService.createMessage(
+        payload,
+        userId,
+      );
+      this.server.to(room).emit('message', messagePayload);
+      this.logger.log('Message saved successfully');
+    } catch (error) {
+      this.logger.error(`Failed to send message: ${error}`);
+      client.emit('error', { message: 'send message error' });
+    }
   }
 }

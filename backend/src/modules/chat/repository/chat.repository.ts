@@ -1,7 +1,7 @@
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/generated/client';
-import { MessageCreateInput } from '@prisma/generated/models';
+import { MessageUncheckedCreateInput } from '@prisma/generated/models';
 
 export type MessageWithAccount = Prisma.MessageGetPayload<{
   include: {
@@ -13,7 +13,9 @@ export type MessageWithAccount = Prisma.MessageGetPayload<{
 export class ChatRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createMessage(data: MessageCreateInput): Promise<MessageWithAccount> {
+  async createMessage(
+    data: MessageUncheckedCreateInput,
+  ): Promise<MessageWithAccount> {
     return this.prismaService.message.create({
       data,
       include: {
@@ -21,6 +23,7 @@ export class ChatRepository {
           select: {
             id: true,
             username: true,
+            createdAt: true,
           },
         },
       },
@@ -30,7 +33,7 @@ export class ChatRepository {
     streamId: string,
     limit: number,
     cursor?: string,
-  ): Promise<MessageWithAccount[] | null> {
+  ): Promise<MessageWithAccount[]> {
     return this.prismaService.message.findMany({
       where: {
         streamId,
