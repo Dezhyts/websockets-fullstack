@@ -6,6 +6,7 @@ import { MessageUncheckedCreateInput } from '@prisma/generated/models';
 export type MessageWithAccount = Prisma.MessageGetPayload<{
   include: {
     account: { select: { id: true; username: true } };
+    replyTo: { include: { account: { select: { id: true; username: true } } } };
   };
 }>;
 
@@ -23,7 +24,16 @@ export class ChatRepository {
           select: {
             id: true,
             username: true,
-            createdAt: true,
+          },
+        },
+        replyTo: {
+          include: {
+            account: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
           },
         },
       },
@@ -39,7 +49,7 @@ export class ChatRepository {
         streamId,
       },
       take: limit,
-      skip: 1,
+      skip: cursor ? 1 : 0,
       ...(cursor && {
         cursor: {
           id: cursor,
@@ -53,6 +63,11 @@ export class ChatRepository {
           select: {
             id: true,
             username: true,
+          },
+        },
+        replyTo: {
+          include: {
+            account: { select: { id: true, username: true } },
           },
         },
       },

@@ -23,12 +23,13 @@ export class ChatService {
   getRoom = (streamId: string) => `stream:${streamId}`;
 
   async createMessage(data: SendMessageDto, userId: string) {
-    const { message, streamId } = data;
+    const { message, streamId, replyToId } = data;
 
     const savedMessage = await this.chatRepository.createMessage({
       text: message,
       streamId,
       accountId: userId,
+      replyToId: replyToId,
     });
 
     await this.сhatRedisRepository.rpushMessage(streamId, savedMessage);
@@ -38,6 +39,13 @@ export class ChatService {
       username: savedMessage.account?.username ?? '',
       message: savedMessage.text || '',
       createdAt: savedMessage.createdAt.toISOString(),
+      replyTo: savedMessage.replyTo
+        ? {
+            id: savedMessage.replyTo.id,
+            message: savedMessage.replyTo.text,
+            username: savedMessage.replyTo.account?.username ?? '',
+          }
+        : null,
     };
   }
 
@@ -80,5 +88,13 @@ export class ChatService {
       typeof msg.createdAt === 'string'
         ? msg.createdAt
         : msg.createdAt.toISOString(),
+
+    replyTo: msg.replyTo
+      ? {
+          id: msg.replyTo.id,
+          message: msg.replyTo.text,
+          username: msg.replyTo.account?.username ?? '',
+        }
+      : null,
   });
 }

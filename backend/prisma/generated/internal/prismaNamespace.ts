@@ -726,6 +726,7 @@ export const MessageScalarFieldEnum = {
   streamId: 'streamId',
   accountId: 'accountId',
   createdAt: 'createdAt',
+  replyToId: 'replyToId',
 } as const;
 
 export type MessageScalarFieldEnum =

@@ -64,4 +64,12 @@ export class SendMessageDto {
   @IsString()
   @IsNotEmpty()
   message: string;
+
+  @ApiProperty({
+    description: 'Id message to reply',
+    example: 'Hello!',
+  })
+  @IsString()
+  @IsOptional()
+  replyToId?: string;
 }
