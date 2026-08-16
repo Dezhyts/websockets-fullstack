@@ -57,6 +57,7 @@ export const ModelName = {
   Account: 'Account',
   Message: 'Message',
   Stream: 'Stream',
+  StreamBanList: 'StreamBanList',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -111,6 +112,18 @@ export const StreamScalarFieldEnum = {
 
 export type StreamScalarFieldEnum =
   (typeof StreamScalarFieldEnum)[keyof typeof StreamScalarFieldEnum];
+
+export const StreamBanListScalarFieldEnum = {
+  id: 'id',
+  streamId: 'streamId',
+  userId: 'userId',
+  bannedBy: 'bannedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type StreamBanListScalarFieldEnum =
+  (typeof StreamBanListScalarFieldEnum)[keyof typeof StreamBanListScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',

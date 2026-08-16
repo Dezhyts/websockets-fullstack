@@ -48,20 +48,20 @@ export class MediaService {
       canPublish: canPublish,
       canSubscribe: true,
       roomJoin: true,
+      canPublishData: false,
+      canPublishSources: [],
     });
 
-    const tokenString = await at.toJwt();
-
-    return { token: tokenString };
+    return await at.toJwt();
   }
 
-  async createIngress(roomName: string, streamId: string) {
+  async createIngress(roomName: string, userId: string) {
     try {
       const ingress = await this.ingressClient.createIngress(
         IngressInput.RTMP_INPUT,
         {
           roomName: roomName,
-          participantIdentity: streamId,
+          participantIdentity: userId,
           video: new IngressVideoOptions({
             encodingOptions: {
               case: 'preset',
@@ -77,13 +77,11 @@ export class MediaService {
           }),
         },
       );
-
-      const fallbackUrl = 'rtmp://localhost:1935/x';
-
+      console.log(JSON.stringify(ingress, null, 2));
       return {
         ingressId: ingress.ingressId,
         streamKey: ingress.streamKey,
-        streamUrl: ingress.url || fallbackUrl,
+        streamUrl: `${this.configService.getOrThrow<string>('RTMP_BASE_URL')}/${ingress.streamKey}`,
       };
     } catch (error) {
       console.error(error);

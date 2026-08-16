@@ -3,16 +3,16 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@shared/consts/jwt';
+import { Request } from 'express';
 import { Socket } from 'socket.io';
 
 @Injectable()
-export class OptionalWsAuthGuard implements CanActivate {
-  private readonly logger = new Logger(OptionalWsAuthGuard.name);
+export class OptionalAuthGuard implements CanActivate {
+  private readonly logger = new Logger(OptionalAuthGuard.name);
 
   constructor(
     private readonly jwtService: JwtService,
@@ -20,23 +20,30 @@ export class OptionalWsAuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const client = context.switchToWs().getClient<Socket>();
+    let token: string | undefined;
+    let targetObject: Request | Socket;
 
-    let token =
-      (client.handshake?.headers?.token as string | undefined) ||
-      (client.handshake?.query?.token as string | undefined) ||
-      client.handshake?.headers?.['authorization'];
+    if (context.getType() === 'ws') {
+      const client = context.switchToWs().getClient<Socket>();
+      targetObject = client;
 
-    if (token && token.startsWith('Bearer ')) {
-      token = token.split(' ')[1];
+      token =
+        (client.handshake?.headers?.token as string | undefined) ||
+        (client.handshake?.query?.token as string | undefined) ||
+        (client.handshake?.auth?.token as string | undefined);
+
+      if (token && token.startsWith('Bearer ')) {
+        token = token.split(' ')[1];
+      }
+    } else {
+      const request = context.switchToHttp().getRequest<Request>();
+      targetObject = request;
+
+      token = request.cookies?.['accessToken'] as string | undefined;
     }
 
     if (!token) {
       return true;
-    }
-
-    if (!token) {
-      throw new UnauthorizedException('Authorization token not found');
     }
 
     try {
@@ -44,10 +51,11 @@ export class OptionalWsAuthGuard implements CanActivate {
         secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
       });
 
-      client.user = result;
+      targetObject.user = result;
     } catch (error) {
-      this.logger.error(error);
+      this.logger.debug('JWT verification error:', error);
     }
+
     return true;
   }
 }

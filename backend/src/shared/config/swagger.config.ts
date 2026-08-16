@@ -5,7 +5,7 @@ export function getSwaggerConfig(app: INestApplication) {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('NestJS Chat')
     .setVersion('1.0')
-    .addBasicAuth()
+    .addBearerAuth()
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);

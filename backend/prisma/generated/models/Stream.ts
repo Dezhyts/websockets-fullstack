@@ -191,6 +191,7 @@ export type StreamWhereInput = {
     Prisma.AccountWhereInput
   >;
   messages?: Prisma.MessageListRelationFilter;
+  streamBanLists?: Prisma.StreamBanListListRelationFilter;
 };
 
 export type StreamOrderByWithRelationInput = {
@@ -201,6 +202,7 @@ export type StreamOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder;
   account?: Prisma.AccountOrderByWithRelationInput;
   messages?: Prisma.MessageOrderByRelationAggregateInput;
+  streamBanLists?: Prisma.StreamBanListOrderByRelationAggregateInput;
 };
 
 export type StreamWhereUniqueInput = Prisma.AtLeast<
@@ -218,6 +220,7 @@ export type StreamWhereUniqueInput = Prisma.AtLeast<
       Prisma.AccountWhereInput
     >;
     messages?: Prisma.MessageListRelationFilter;
+    streamBanLists?: Prisma.StreamBanListListRelationFilter;
   },
   'id' | 'accountId'
 >;
@@ -255,6 +258,7 @@ export type StreamCreateInput = {
   updatedAt?: Date | string;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateInput = {
@@ -264,6 +268,7 @@ export type StreamUncheckedCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUpdateInput = {
@@ -273,6 +278,7 @@ export type StreamUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateInput = {
@@ -282,6 +288,7 @@ export type StreamUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateManyInput = {
@@ -423,12 +430,39 @@ export type StreamUpdateOneRequiredWithoutMessagesNestedInput = {
   >;
 };
 
+export type StreamCreateNestedOneWithoutStreamBanListsInput = {
+  create?: Prisma.XOR<
+    Prisma.StreamCreateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedCreateWithoutStreamBanListsInput
+  >;
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutStreamBanListsInput;
+  connect?: Prisma.StreamWhereUniqueInput;
+};
+
+export type StreamUpdateOneRequiredWithoutStreamBanListsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.StreamCreateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedCreateWithoutStreamBanListsInput
+  >;
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutStreamBanListsInput;
+  upsert?: Prisma.StreamUpsertWithoutStreamBanListsInput;
+  connect?: Prisma.StreamWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.StreamUpdateToOneWithWhereWithoutStreamBanListsInput,
+      Prisma.StreamUpdateWithoutStreamBanListsInput
+    >,
+    Prisma.StreamUncheckedUpdateWithoutStreamBanListsInput
+  >;
+};
+
 export type StreamCreateWithoutAccountInput = {
   id?: string;
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutAccountInput = {
@@ -437,6 +471,7 @@ export type StreamUncheckedCreateWithoutAccountInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamCreateOrConnectWithoutAccountInput = {
@@ -473,6 +508,7 @@ export type StreamUpdateWithoutAccountInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutAccountInput = {
@@ -481,6 +517,7 @@ export type StreamUncheckedUpdateWithoutAccountInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateWithoutMessagesInput = {
@@ -489,6 +526,7 @@ export type StreamCreateWithoutMessagesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
+  streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutMessagesInput = {
@@ -497,6 +535,7 @@ export type StreamUncheckedCreateWithoutMessagesInput = {
   accountId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamCreateOrConnectWithoutMessagesInput = {
@@ -533,6 +572,7 @@ export type StreamUpdateWithoutMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
+  streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutMessagesInput = {
@@ -541,6 +581,71 @@ export type StreamUncheckedUpdateWithoutMessagesInput = {
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
+};
+
+export type StreamCreateWithoutStreamBanListsInput = {
+  id?: string;
+  title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
+  messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
+};
+
+export type StreamUncheckedCreateWithoutStreamBanListsInput = {
+  id?: string;
+  title: string;
+  accountId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
+};
+
+export type StreamCreateOrConnectWithoutStreamBanListsInput = {
+  where: Prisma.StreamWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.StreamCreateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedCreateWithoutStreamBanListsInput
+  >;
+};
+
+export type StreamUpsertWithoutStreamBanListsInput = {
+  update: Prisma.XOR<
+    Prisma.StreamUpdateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedUpdateWithoutStreamBanListsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.StreamCreateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedCreateWithoutStreamBanListsInput
+  >;
+  where?: Prisma.StreamWhereInput;
+};
+
+export type StreamUpdateToOneWithWhereWithoutStreamBanListsInput = {
+  where?: Prisma.StreamWhereInput;
+  data: Prisma.XOR<
+    Prisma.StreamUpdateWithoutStreamBanListsInput,
+    Prisma.StreamUncheckedUpdateWithoutStreamBanListsInput
+  >;
+};
+
+export type StreamUpdateWithoutStreamBanListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
+  messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
+};
+
+export type StreamUncheckedUpdateWithoutStreamBanListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 /**
@@ -549,6 +654,7 @@ export type StreamUncheckedUpdateWithoutMessagesInput = {
 
 export type StreamCountOutputType = {
   messages: number;
+  streamBanLists: number;
 };
 
 export type StreamCountOutputTypeSelect<
@@ -556,6 +662,7 @@ export type StreamCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   messages?: boolean | StreamCountOutputTypeCountMessagesArgs;
+  streamBanLists?: boolean | StreamCountOutputTypeCountStreamBanListsArgs;
 };
 
 /**
@@ -581,6 +688,16 @@ export type StreamCountOutputTypeCountMessagesArgs<
   where?: Prisma.MessageWhereInput;
 };
 
+/**
+ * StreamCountOutputType without action
+ */
+export type StreamCountOutputTypeCountStreamBanListsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.StreamBanListWhereInput;
+};
+
 export type StreamSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -593,6 +710,7 @@ export type StreamSelect<
     updatedAt?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
     messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>;
+    streamBanLists?: boolean | Prisma.Stream$streamBanListsArgs<ExtArgs>;
     _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -649,6 +767,7 @@ export type StreamInclude<
 > = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>;
+  streamBanLists?: boolean | Prisma.Stream$streamBanListsArgs<ExtArgs>;
   _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type StreamIncludeCreateManyAndReturn<
@@ -672,6 +791,7 @@ export type $StreamPayload<
   objects: {
     account: Prisma.$AccountPayload<ExtArgs>;
     messages: Prisma.$MessagePayload<ExtArgs>[];
+    streamBanLists: Prisma.$StreamBanListPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1255,6 +1375,17 @@ export interface Prisma__StreamClient<
       >
     | Null
   >;
+  streamBanLists<T extends Prisma.Stream$streamBanListsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Stream$streamBanListsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$StreamBanListPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1782,6 +1913,36 @@ export type Stream$messagesArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[];
+};
+
+/**
+ * Stream.streamBanLists
+ */
+export type Stream$streamBanListsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the StreamBanList
+   */
+  select?: Prisma.StreamBanListSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the StreamBanList
+   */
+  omit?: Prisma.StreamBanListOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StreamBanListInclude<ExtArgs> | null;
+  where?: Prisma.StreamBanListWhereInput;
+  orderBy?:
+    | Prisma.StreamBanListOrderByWithRelationInput
+    | Prisma.StreamBanListOrderByWithRelationInput[];
+  cursor?: Prisma.StreamBanListWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    Prisma.StreamBanListScalarFieldEnum | Prisma.StreamBanListScalarFieldEnum[];
 };
 
 /**

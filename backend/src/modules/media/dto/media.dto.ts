@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetTokenDto {
@@ -10,15 +10,6 @@ export class GetTokenDto {
     description: 'Room name',
   })
   roomName: string;
-
-  @ApiProperty({
-    description: 'Participant name',
-    example: 'john_doe',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  user: string;
 }
 
 export class IngressDto {
@@ -30,13 +21,18 @@ export class IngressDto {
     description: 'Room name',
   })
   roomName: string;
+}
 
-  @ApiProperty({
-    description: 'streamId',
-    example: 'streamdId_123',
-    required: true,
-  })
+export class ErrorResponseDto {
+  @IsNumber()
+  @ApiProperty()
+  statusCode: number;
+
   @IsString()
-  @IsNotEmpty()
-  streamId: string;
+  @ApiProperty()
+  message: string;
+
+  @IsString()
+  @ApiProperty()
+  error: string;
 }

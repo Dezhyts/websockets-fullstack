@@ -1,6 +1,7 @@
 import { RedisService } from '@infrastructure/redis/redis.service';
 import { Injectable } from '@nestjs/common';
 import { MessageWithAccount } from './chat.repository';
+import { DurationBan } from '@shared/common/types/duration.ban.enum';
 
 @Injectable()
 export class ChatRedisRepository {
@@ -44,5 +45,32 @@ export class ChatRedisRepository {
     const messageString = JSON.stringify(message);
 
     await this.redisService.client.lrem(key, 1, messageString);
+  }
+
+  public async deleteStreamMessages(streamId: string): Promise<void> {
+    const key = `chat:stream:${streamId}:messages`;
+    await this.redisService.client.del(key);
+  }
+
+  public async setBanUser(
+    streamId: string,
+    userId: string,
+    duration: number,
+  ): Promise<void> {
+    const key = `chat:stream:ban:${streamId}:${userId}`;
+
+    await this.redisService.client.set(key, '1', 'EX', duration);
+  }
+  public async getBanUser(streamId: string, userId: string): Promise<boolean> {
+    const key = `chat:stream:ban:${streamId}:${userId}`;
+
+    const result = await this.redisService.client.get(key);
+
+    return result !== null;
+  }
+  public async deleteBanUser(streamId: string, userId: string): Promise<void> {
+    const key = `chat:stream:ban:${streamId}:${userId}`;
+
+    await this.redisService.client.del(key);
   }
 }

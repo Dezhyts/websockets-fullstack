@@ -81,4 +81,39 @@ export class ChatRepository {
       },
     });
   }
+
+  async createPermanentUserBan(
+    streamId: string,
+    userId: string,
+    bannedBy: string,
+  ) {
+    return await this.prismaService.streamBanList.upsert({
+      where: {
+        streamId_userId: {
+          streamId,
+          userId,
+        },
+      },
+      create: {
+        streamId,
+        userId,
+        bannedBy,
+      },
+      update: {
+        bannedBy,
+      },
+    });
+  }
+
+  async checkedUserBan(streamId: string, userId: string): Promise<boolean> {
+    const ban = await this.prismaService.streamBanList.findUnique({
+      where: {
+        streamId_userId: {
+          streamId,
+          userId,
+        },
+      },
+    });
+    return ban !== null;
+  }
 }

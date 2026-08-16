@@ -39,7 +39,7 @@ model Message {
   createdAt DateTime @default(now()) @map("created_at")
 
   replyToId String?
-  replyTo   Message? @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
   replies   Message[] @relation("MessageReplies")
 
   @@index([streamId, accountId])
@@ -58,7 +58,25 @@ model Stream {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
 
+  streamBanLists StreamBanList[]
+
   @@map("streams")
+}
+
+model StreamBanList {
+  id String @id @default(uuid())
+
+  streamId String
+  stream   Stream @relation(fields: [streamId], references: [id])
+  userId   String
+
+  bannedBy String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([streamId, userId])
+  @@map("stream_ban_list")
 }
 
 enum Role {

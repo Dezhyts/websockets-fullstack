@@ -44,6 +44,7 @@ export class AuthController {
   ) {
     const result = await this.authService.registerAccount(body);
     this.setRefreshToken(res, result.refreshToken);
+    this.setAccessToken(res, result.accessToken);
 
     return {
       accessToken: result.accessToken,
@@ -64,6 +65,7 @@ export class AuthController {
   ) {
     const result = await this.authService.loginAccount(body);
     this.setRefreshToken(res, result.refreshToken);
+    this.setAccessToken(res, result.accessToken);
 
     return {
       accessToken: result.accessToken,
@@ -89,6 +91,7 @@ export class AuthController {
 
     const token = await this.authService.refreshToken({ refreshToken });
     this.setRefreshToken(res, token.refreshToken);
+    this.setAccessToken(res, token.accessToken);
 
     return { accessToken: token.accessToken };
   }
@@ -112,6 +115,12 @@ export class AuthController {
       sameSite: 'lax',
     });
 
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: this.configService.getOrThrow('NODE_ENV') !== 'development',
+      sameSite: 'lax',
+    });
+
     return { success: result };
   }
 
@@ -121,6 +130,19 @@ export class AuthController {
     );
 
     res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: this.configService.getOrThrow('NODE_ENV') !== 'development',
+      sameSite: 'lax',
+      maxAge: ms(expiresIn as StringValue),
+    });
+  }
+
+  private setAccessToken(res: Response, accessToken: string) {
+    const expiresIn = this.configService.getOrThrow<string>(
+      'JWT_ACCESS_EXPIRES_IN',
+    );
+
+    res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: this.configService.getOrThrow('NODE_ENV') !== 'development',
       sameSite: 'lax',

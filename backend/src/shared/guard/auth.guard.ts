@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
       token =
         (client.handshake?.headers?.token as string | undefined) ||
         (client.handshake?.query?.token as string | undefined) ||
-        client.handshake?.headers?.['authorization'];
+        (client.handshake?.auth?.token as string | undefined);
 
       if (token && token.startsWith('Bearer ')) {
         token = token.split(' ')[1];
@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate {
     } else {
       const request = context.switchToHttp().getRequest<Request>();
       targetObject = request;
-      token = request.cookies?.['access_token'] as string | undefined;
+      token = request.cookies?.['accessToken'] as string | undefined;
     }
 
     if (!token) {

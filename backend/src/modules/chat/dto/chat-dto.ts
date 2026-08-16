@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +9,7 @@ import {
   Min,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { DurationBan } from '@shared/common/types/duration.ban.enum';
 
 export class JoinStreamDto {
   @ApiProperty({
@@ -55,6 +57,7 @@ export class SendMessageDto {
     example: 'stream_12345',
   })
   @IsNotEmpty()
+  @IsString()
   streamId: string;
 
   @ApiProperty({
@@ -72,4 +75,30 @@ export class SendMessageDto {
   @IsString()
   @IsOptional()
   replyToId?: string;
+}
+
+export class BanUserDto {
+  @ApiProperty({
+    description: 'Id stream(room) where send message',
+    example: 'stream_12345',
+  })
+  @IsNotEmpty()
+  @IsString()
+  streamId: string;
+
+  @ApiProperty({
+    description: 'Id user to ban',
+    example: 'user_12345',
+  })
+  @IsNotEmpty()
+  @IsString()
+  targetUserIdBan: string;
+
+  @ApiProperty({
+    description: 'Duration of ban',
+    example: DurationBan.ONE_HOUR,
+  })
+  @IsEnum(DurationBan)
+  @IsNotEmpty()
+  duration: DurationBan;
 }

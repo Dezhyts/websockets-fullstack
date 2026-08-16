@@ -31,3 +31,8 @@ export type Message = Prisma.MessageModel;
  *
  */
 export type Stream = Prisma.StreamModel;
+/**
+ * Model StreamBanList
+ *
+ */
+export type StreamBanList = Prisma.StreamBanListModel;
