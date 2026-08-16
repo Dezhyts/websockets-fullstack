@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/_types/chat/join_stream": {
+    "/media/webhook": {
         parameters: {
             query?: never;
             header?: never;
@@ -13,30 +13,30 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["ChatController_wsJoin"];
+        post: operations["MediaController_handleWebhook"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/_types/chat/leave_stream": {
+    "/media/token": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["MediaController_getToken"];
         put?: never;
-        post: operations["ChatController_wsLeave"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/_types/chat/send_message": {
+    "/media/ingress": {
         parameters: {
             query?: never;
             header?: never;
@@ -45,7 +45,87 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["ChatController_wsSendMessage"];
+        post: operations["MediaController_createIngress"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * User registration
+         * @description User registration
+         */
+        post: operations["AuthController_register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * User registration
+         * @description User registration
+         */
+        post: operations["AuthController_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * User registration
+         * @description Refresh token
+         */
+        post: operations["AuthController_refresh"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Logout user
+         * @description Logout from account
+         */
+        post: operations["AuthController_logout"];
         delete?: never;
         options?: never;
         head?: never;
@@ -56,31 +136,109 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        JoinStreamDto: {
+        GetTokenResponseDto: {
             /**
-             * @description Id stream(room) to join
-             * @example stream_34567
+             * @description stream token for authorization user
+             * @example stream_token
              */
-            streamId: string;
+            streamToken: string;
+            /**
+             * @description User can stream
+             * @example true
+             */
+            isOwner: boolean;
+            /**
+             * @description User is auth
+             * @example true
+             */
+            isAuth: boolean;
         };
-        LeaveStreamDto: {
+        IngressDto: {
             /**
-             * @description Id stream(room) to leave
-             * @example stream_12345
+             * @description Room name
+             * @example conference-room-101
              */
-            streamId: string;
+            roomName: string;
         };
-        SendMessageDto: {
-            /**
-             * @description Id stream(room) where send message
-             * @example stream_12345
-             */
-            streamId: string;
-            /**
-             * @description Text message to send
-             * @example Hello!
-             */
+        CreateIngressResponseDto: {
+            /** @example IN_id */
+            ingressId: string;
+            /** @example rtmp://localhost:1935/x */
+            url: string;
+            /** @example sk-xxxx */
+            streamKey: string;
+        };
+        ErrorResponseDto: {
+            statusCode: number;
             message: string;
+            error: string;
+        };
+        RegisterDto: {
+            /**
+             * @description Unique username for account
+             * @example alexbibi
+             */
+            username: string;
+            /**
+             * @description User email for registration
+             * @example vladis@gmail.com
+             */
+            email: string;
+            /**
+             * @description Strong password for registration
+             * @example Password123&
+             */
+            password: string;
+        };
+        RegisterDtoResponse: {
+            /**
+             * @description Access token for authorization
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
+             */
+            accessToken: string;
+            /**
+             * @description Access token for authorization
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
+             */
+            refreshToken: string;
+        };
+        LoginDto: {
+            /**
+             * @description Enter your unique username or registered email
+             * @example alexbibi or vladis@gmail.com
+             */
+            identity: string;
+            /**
+             * @description User password for login
+             * @example Password123&
+             */
+            password: string;
+        };
+        LoginDtoResponse: {
+            /**
+             * @description Access token for authorization
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
+             */
+            accessToken: string;
+            /**
+             * @description Access token for authorization
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
+             */
+            refreshToken: string;
+        };
+        RefreshDtoResponse: {
+            /**
+             * @description New access token for authorization
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
+             */
+            accessToken: string;
+        };
+        LogoutDtoResponse: {
+            /**
+             * @description Logout status
+             * @example true
+             */
+            success: boolean;
         };
     };
     responses: never;
@@ -91,20 +249,18 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    ChatController_wsJoin: {
+    MediaController_handleWebhook: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                authorization: string;
+            };
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JoinStreamDto"];
-            };
-        };
+        requestBody?: never;
         responses: {
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -112,20 +268,42 @@ export interface operations {
             };
         };
     };
-    ChatController_wsLeave: {
+    MediaController_getToken: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description Room name */
+                roomName: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LeaveStreamDto"];
-            };
-        };
+        requestBody?: never;
         responses: {
-            201: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetTokenResponseDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -133,7 +311,7 @@ export interface operations {
             };
         };
     };
-    ChatController_wsSendMessage: {
+    MediaController_createIngress: {
         parameters: {
             query?: never;
             header?: never;
@@ -142,7 +320,57 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["SendMessageDto"];
+                "application/json": components["schemas"]["IngressDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateIngressResponseDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterDto"];
             };
         };
         responses: {
@@ -150,7 +378,70 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["RegisterDtoResponse"];
+                };
+            };
+        };
+    };
+    AuthController_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LoginDtoResponse"];
+                };
+            };
+        };
+    };
+    AuthController_refresh: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RefreshDtoResponse"];
+                };
+            };
+        };
+    };
+    AuthController_logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LogoutDtoResponse"];
+                };
             };
         };
     };

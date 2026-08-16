@@ -18,7 +18,7 @@ export const Container = memo((props: ContainerProps) => {
     return (
         <div
             className={cn(
-                ' max-w-375 mx-auto sm:px-6 lg:px-8 xl:px-12 ',
+                'max-w-375 mx-auto sm:px-6 lg:px-8 xl:px-12',
                 className
             )}
             data-testid={dataTestId}
