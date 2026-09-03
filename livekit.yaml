@@ -13,3 +13,7 @@ ingress:
   rtmp_base_url: 'rtmp://localhost:1935/x'
 keys:
   devkey: 'super_secret_123_456_secure_string_12'
+webhook:
+  api_key: devkey
+  urls:
+    - 'http://host.docker.internal:3000/media/webhook'
