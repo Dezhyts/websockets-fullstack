@@ -30,6 +30,7 @@ export class AuthService {
     const tokens = await this.generateToken({
       sub: account.id,
       email: account.email,
+      username: account.username,
       role: account.role,
     });
 
@@ -57,6 +58,7 @@ export class AuthService {
     const tokens = await this.generateToken({
       sub: account.id,
       email: account.email,
+      username: account.username,
       role: account.role,
     });
 
@@ -82,7 +84,7 @@ export class AuthService {
         payload.sub,
       );
 
-      if (getRefreshToken !== refreshToken || !getRefreshToken)
+      if (!getRefreshToken || getRefreshToken !== refreshToken)
         throw new UnauthorizedException('Invalid or expired refresh token');
 
       const account = await this.authRepository.findById(payload.sub);
@@ -91,6 +93,7 @@ export class AuthService {
       const tokens = await this.generateToken({
         sub: account.id,
         email: account.email,
+        username: account.username,
         role: account.role,
       });
 
@@ -115,6 +118,7 @@ export class AuthService {
     const accessTokenPayload = {
       sub: payload.sub,
       email: payload.email,
+      username: payload.username,
       role: payload.role,
     };
     const refreshTokenPayload = {

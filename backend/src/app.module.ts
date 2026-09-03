@@ -9,6 +9,10 @@ import { ChatModule } from './modules/chat/chat.module';
 import { MediaModule } from './modules/media/media.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.interceptor';
+import { NotificationModule } from './modules/notification/notification.module';
+import { BullMqModule } from '@infrastructure/bullmq/bullmq.module';
+import { FollowModule } from './modules/follow/follow.module';
+import { RedisEmitterModule } from '@infrastructure/redis-emitter/redis-emitter.module';
 
 @Module({
   imports: [
@@ -24,11 +28,15 @@ import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.inte
         secret: configService.getOrThrow('JWT_ACCESS_SECRET'),
       }),
     }),
+    RedisEmitterModule,
     ChatModule,
     PrismaModule,
+    BullMqModule,
     RedisModule,
     MediaModule,
     AuthModule,
+    NotificationModule,
+    FollowModule,
   ],
   controllers: [],
   providers: [

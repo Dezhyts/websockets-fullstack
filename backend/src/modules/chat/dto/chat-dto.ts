@@ -8,7 +8,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { DurationBan } from '@shared/common/types/duration.ban.enum';
 
 export class JoinStreamDto {
@@ -18,6 +18,7 @@ export class JoinStreamDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Transform(({ value }) => decodeURIComponent(value))
   streamId: string;
 
   @ApiProperty({
@@ -48,6 +49,7 @@ export class LeaveStreamDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Transform(({ value }) => decodeURIComponent(value))
   streamId: string;
 }
 
@@ -57,6 +59,7 @@ export class SendMessageDto {
     example: 'stream_12345',
   })
   @IsNotEmpty()
+  @Transform(({ value }) => decodeURIComponent(value))
   @IsString()
   streamId: string;
 
@@ -84,6 +87,7 @@ export class BanUserDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Transform(({ value }) => decodeURIComponent(value))
   streamId: string;
 
   @ApiProperty({

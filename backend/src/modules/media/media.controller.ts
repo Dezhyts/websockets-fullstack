@@ -10,68 +10,73 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ErrorResponseDto, GetTokenDto, IngressDto } from './dto/media.dto';
-import { MediaService } from './media.service';
-import { Roles } from '@shared/decorators/roles-decorator';
-import { StreamRoleGuard } from '@shared/guard/stream-role.guard';
-import { RawBody } from '@shared/decorators/raw-body.decorator';
-import type { Request } from 'express';
-import { Role } from '@prisma/generated/enums';
-import { AuthGuard } from '@shared/guard/auth.guard';
-import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { Role } from '@prisma/generated/enums';
+import { ApiStandardErrors } from '@shared/decorators/api-errors.decorator';
+import { CurrentUser } from '@shared/decorators/current-user.decorator';
+import { Roles } from '@shared/decorators/roles-decorator';
+import { AuthRequestGuard } from '@shared/guard/request/auth.request.guard';
+import { OptionalAuthRequestGuard } from '@shared/guard/request/optional.auth.request.guard';
+import { RolesRequestGuard } from '@shared/guard/request/roles.request.guard';
+import { randomBytes } from 'crypto';
+import type { Request } from 'express';
+import {
+  CreateIngressDto,
+  ErrorResponseDto,
+  GetTokenDto,
+} from './dto/media.dto';
 import {
   CreateIngressResponseDto,
   GetTokenResponseDto,
 } from './dto/media.response.dto';
-import { ApiStandardErrors } from '@shared/decorators/api-errors.decorator';
-import { OptionalAuthGuard } from '@shared/guard/optional.auth.guard';
+import { MediaService } from './media.service';
 
 @Controller('media')
+@ApiStandardErrors(ErrorResponseDto)
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @Post('webhook')
   @HttpCode(HttpStatus.OK)
   async handleWebhook(
-    @RawBody() rawBody: Buffer,
+    @Req() req: Request & { rawBody?: Buffer },
     @Headers('authorization') authHeader: string,
   ) {
+    const rawBody = req.rawBody!;
+
     return this.mediaService.handleWebhook(rawBody, authHeader);
   }
 
-  @Roles(Role.STREAMER, Role.USER)
-  @UseGuards(OptionalAuthGuard, StreamRoleGuard)
-  @ApiStandardErrors()
+  @UseGuards(OptionalAuthRequestGuard)
   @ApiOkResponse({ type: GetTokenResponseDto })
   @Get('token')
   async getToken(@Query() query: GetTokenDto, @Req() req: Request) {
-    const isOwner = req.canPublish ?? false;
-    const isAuth = !!req.user;
-    const username = req.user?.email ?? 'anonim';
+    const userId = req.user?.sub;
+    const username =
+      req.user?.username ?? `anon_${randomBytes(4).toString('hex')}`;
 
-    const streamToken = await this.mediaService.generateToken(
-      query.roomName,
-      username,
-      isOwner,
-    );
+    const decodedQueryName = decodeURIComponent(query.username);
+
+    const { streamToken, roomName, canPublish } =
+      await this.mediaService.generateToken(decodedQueryName, username, userId);
 
     return {
-      streamToken: streamToken,
-      isOwner: isOwner,
-      isAuth,
+      streamToken,
+      roomName,
+      canPublish,
+      isAuth: !!userId,
     };
   }
 
   @Post('ingress')
-  @Roles(Role.STREAMER, Role.USER, Role.ADMIN)
+  @UseGuards(AuthRequestGuard, RolesRequestGuard)
+  @Roles(Role.USER)
   @ApiOkResponse({ type: CreateIngressResponseDto })
   @ApiStandardErrors(ErrorResponseDto)
-  @UseGuards(AuthGuard, StreamRoleGuard)
   async createIngress(
-    @Body() body: IngressDto,
     @CurrentUser('sub') userId: string,
+    @Body() data: CreateIngressDto,
   ) {
-    return this.mediaService.createIngress(body.roomName, userId);
+    return this.mediaService.createIngress(userId, data.title);
   }
 }

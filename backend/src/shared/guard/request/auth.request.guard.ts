@@ -11,33 +11,15 @@ import { Request } from 'express';
 import { Socket } from 'socket.io';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthRequestGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    let token: string | undefined;
-    let targetObject: Request | Socket;
-
-    if (context.getType() === 'ws') {
-      const client = context.switchToWs().getClient<Socket>();
-      targetObject = client;
-
-      token =
-        (client.handshake?.headers?.token as string | undefined) ||
-        (client.handshake?.query?.token as string | undefined) ||
-        (client.handshake?.auth?.token as string | undefined);
-
-      if (token && token.startsWith('Bearer ')) {
-        token = token.split(' ')[1];
-      }
-    } else {
-      const request = context.switchToHttp().getRequest<Request>();
-      targetObject = request;
-      token = request.cookies?.['accessToken'] as string | undefined;
-    }
+    const request = context.switchToHttp().getRequest<Request>();
+    const token = request.cookies?.['accessToken'] as string | undefined;
 
     if (!token) {
       throw new UnauthorizedException('Authorization token not found');
@@ -48,7 +30,7 @@ export class AuthGuard implements CanActivate {
         secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
       });
 
-      targetObject.user = result;
+      request.user = result;
 
       return true;
     } catch {

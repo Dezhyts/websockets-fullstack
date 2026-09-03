@@ -1,7 +1,6 @@
 import { RedisService } from '@infrastructure/redis/redis.service';
 import { Injectable } from '@nestjs/common';
 import { MessageWithAccount } from './chat.repository';
-import { DurationBan } from '@shared/common/types/duration.ban.enum';
 
 @Injectable()
 export class ChatRedisRepository {

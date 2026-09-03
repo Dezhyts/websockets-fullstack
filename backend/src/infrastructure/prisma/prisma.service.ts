@@ -7,6 +7,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/generated/client';
+interface QueryEvent {
+  query: string;
+  params: string;
+  duration: number;
+}
 
 @Injectable()
 export class PrismaService
@@ -30,6 +35,11 @@ export class PrismaService
     const timer = Date.now();
     try {
       await this.$connect();
+      this.$on('query' as never, (event: QueryEvent) => {
+        this.logger.debug(
+          `Query: ${event.query} Params: ${event.params} Duration: ${event.duration}ms`,
+        );
+      });
       const ms = Date.now() - timer;
       this.logger.log(`Connected to database in ${ms}ms`);
     } catch (error) {

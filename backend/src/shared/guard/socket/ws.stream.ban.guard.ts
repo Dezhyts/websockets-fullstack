@@ -1,10 +1,6 @@
 import { ChatService } from '@modules/chat/chat.service';
-import {
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
 @Injectable()
@@ -13,22 +9,19 @@ export class WsStreamBanGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const client = context.switchToWs().getClient<Socket>();
-
     const payload = context.switchToWs().getData<{ streamId: string }>();
-
     const userId = client.user?.sub;
 
     if (!userId) {
-      return false;
+      return true;
     }
 
-    const isBanned = await this.chatService.isBannedUser(
-      payload.streamId,
-      userId,
-    );
+    const streamId = decodeURIComponent(payload.streamId);
+
+    const isBanned = await this.chatService.isBannedUser(streamId, userId);
 
     if (isBanned) {
-      throw new ForbiddenException('You are banned from this stream');
+      throw new WsException('You are banned from this stream');
     }
 
     return true;

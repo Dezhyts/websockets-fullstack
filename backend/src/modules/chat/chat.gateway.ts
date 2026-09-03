@@ -1,4 +1,10 @@
-import { Logger, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Logger,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -13,10 +19,11 @@ import { Role } from '@prisma/generated/enums';
 import { BenchmarkInterceptor } from '@shared/common/interceptors/benchmark.interceptor';
 import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { Roles } from '@shared/decorators/roles-decorator';
-import { AuthGuard } from '@shared/guard/auth.guard';
-import { OptionalAuthGuard } from '@shared/guard/optional.auth.guard';
-import { StreamRoleGuard } from '@shared/guard/stream-role.guard';
-import { WsStreamBanGuard } from '@shared/guard/ws.stream.ban.guard';
+import { AuthSocketGuard } from '@shared/guard/socket/auth.socket.guard';
+import { LimitMessageGuard } from '@shared/guard/socket/limit-message.guard';
+import { OptionalAuthSocketGuard } from '@shared/guard/socket/optional.auth.socket.guard';
+import { RolesSocketGuard } from '@shared/guard/socket/roles.socket.guard';
+import { WsStreamBanGuard } from '@shared/guard/socket/ws.stream.ban.guard';
 import { ChatService } from './chat.service';
 import {
   BanUserDto,
@@ -24,7 +31,9 @@ import {
   LeaveStreamDto,
   SendMessageDto,
 } from './dto/chat-dto';
+import { getValidationPipe } from '@shared/config/validation-pipe.config';
 
+@UsePipes(new ValidationPipe(getValidationPipe()))
 @ApiExtraModels(JoinStreamDto, LeaveStreamDto, SendMessageDto, BanUserDto)
 @WebSocketGateway({
   namespace: '/chat',
@@ -49,7 +58,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('join_stream')
-  @UseGuards(OptionalAuthGuard, WsStreamBanGuard)
+  @UseGuards(OptionalAuthSocketGuard, WsStreamBanGuard)
   @UseInterceptors(BenchmarkInterceptor)
   async handleJoinStream(
     @MessageBody()
@@ -100,7 +109,7 @@ export class ChatGateway {
 
   @SubscribeMessage('send_message')
   @UseInterceptors(BenchmarkInterceptor)
-  @UseGuards(AuthGuard, WsStreamBanGuard)
+  @UseGuards(AuthSocketGuard, WsStreamBanGuard, LimitMessageGuard)
   async handleSendMessage(
     @MessageBody()
     payload: SendMessageDto,
@@ -132,8 +141,8 @@ export class ChatGateway {
 
   @SubscribeMessage('ban_user')
   @UseInterceptors(BenchmarkInterceptor)
-  @UseGuards(AuthGuard, StreamRoleGuard)
-  @Roles(Role.ADMIN, Role.STREAMER)
+  @UseGuards(AuthSocketGuard, RolesSocketGuard)
+  @Roles(Role.ADMIN, Role.USER)
   async handleBanUser(
     @MessageBody() payload: BanUserDto,
     @ConnectedSocket() client: Socket,

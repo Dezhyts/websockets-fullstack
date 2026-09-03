@@ -431,6 +431,8 @@ export const ModelName = {
   Message: 'Message',
   Stream: 'Stream',
   StreamBanList: 'StreamBanList',
+  Follower: 'Follower',
+  Notification: 'Notification',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -452,7 +454,13 @@ export type TypeMap<
     omit: GlobalOmitOptions;
   };
   meta: {
-    modelProps: 'account' | 'message' | 'stream' | 'streamBanList';
+    modelProps:
+      | 'account'
+      | 'message'
+      | 'stream'
+      | 'streamBanList'
+      | 'follower'
+      | 'notification';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -760,6 +768,158 @@ export type TypeMap<
         };
       };
     };
+    Follower: {
+      payload: Prisma.$FollowerPayload<ExtArgs>;
+      fields: Prisma.FollowerFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.FollowerFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.FollowerFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        findFirst: {
+          args: Prisma.FollowerFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.FollowerFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        findMany: {
+          args: Prisma.FollowerFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>[];
+        };
+        create: {
+          args: Prisma.FollowerCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        createMany: {
+          args: Prisma.FollowerCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.FollowerCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>[];
+        };
+        delete: {
+          args: Prisma.FollowerDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        update: {
+          args: Prisma.FollowerUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        deleteMany: {
+          args: Prisma.FollowerDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.FollowerUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.FollowerUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>[];
+        };
+        upsert: {
+          args: Prisma.FollowerUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowerPayload>;
+        };
+        aggregate: {
+          args: Prisma.FollowerAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFollower>;
+        };
+        groupBy: {
+          args: Prisma.FollowerGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.FollowerGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.FollowerCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.FollowerCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    Notification: {
+      payload: Prisma.$NotificationPayload<ExtArgs>;
+      fields: Prisma.NotificationFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        findFirst: {
+          args: Prisma.NotificationFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        findMany: {
+          args: Prisma.NotificationFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[];
+        };
+        create: {
+          args: Prisma.NotificationCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        createMany: {
+          args: Prisma.NotificationCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[];
+        };
+        delete: {
+          args: Prisma.NotificationDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        update: {
+          args: Prisma.NotificationUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        deleteMany: {
+          args: Prisma.NotificationDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.NotificationUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[];
+        };
+        upsert: {
+          args: Prisma.NotificationUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>;
+        };
+        aggregate: {
+          args: Prisma.NotificationAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>;
+        };
+        groupBy: {
+          args: Prisma.NotificationGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.NotificationCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
   };
 } & {
   other: {
@@ -831,6 +991,7 @@ export const StreamScalarFieldEnum = {
   accountId: 'accountId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  status: 'status',
 } as const;
 
 export type StreamScalarFieldEnum =
@@ -847,6 +1008,29 @@ export const StreamBanListScalarFieldEnum = {
 
 export type StreamBanListScalarFieldEnum =
   (typeof StreamBanListScalarFieldEnum)[keyof typeof StreamBanListScalarFieldEnum];
+
+export const FollowerScalarFieldEnum = {
+  followingId: 'followingId',
+  streamerId: 'streamerId',
+  createdAt: 'createdAt',
+  isNotified: 'isNotified',
+} as const;
+
+export type FollowerScalarFieldEnum =
+  (typeof FollowerScalarFieldEnum)[keyof typeof FollowerScalarFieldEnum];
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  streamId: 'streamId',
+  type: 'type',
+  message: 'message',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+} as const;
+
+export type NotificationScalarFieldEnum =
+  (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -919,6 +1103,30 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'DateTime[]'
+>;
+
+/**
+ * Reference to a field of type 'StreamStatus'
+ */
+export type EnumStreamStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'StreamStatus'
+>;
+
+/**
+ * Reference to a field of type 'StreamStatus[]'
+ */
+export type ListEnumStreamStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'StreamStatus[]'
+>;
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'Boolean'
 >;
 
 /**
@@ -1098,6 +1306,8 @@ export type GlobalOmitConfig = {
   message?: Prisma.MessageOmit;
   stream?: Prisma.StreamOmit;
   streamBanList?: Prisma.StreamBanListOmit;
+  follower?: Prisma.FollowerOmit;
+  notification?: Prisma.NotificationOmit;
 };
 
 /* Types for Logging */

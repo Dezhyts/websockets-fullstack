@@ -58,6 +58,8 @@ export const ModelName = {
   Message: 'Message',
   Stream: 'Stream',
   StreamBanList: 'StreamBanList',
+  Follower: 'Follower',
+  Notification: 'Notification',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -108,6 +110,7 @@ export const StreamScalarFieldEnum = {
   accountId: 'accountId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  status: 'status',
 } as const;
 
 export type StreamScalarFieldEnum =
@@ -124,6 +127,29 @@ export const StreamBanListScalarFieldEnum = {
 
 export type StreamBanListScalarFieldEnum =
   (typeof StreamBanListScalarFieldEnum)[keyof typeof StreamBanListScalarFieldEnum];
+
+export const FollowerScalarFieldEnum = {
+  followingId: 'followingId',
+  streamerId: 'streamerId',
+  createdAt: 'createdAt',
+  isNotified: 'isNotified',
+} as const;
+
+export type FollowerScalarFieldEnum =
+  (typeof FollowerScalarFieldEnum)[keyof typeof FollowerScalarFieldEnum];
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  streamId: 'streamId',
+  type: 'type',
+  message: 'message',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+} as const;
+
+export type NotificationScalarFieldEnum =
+  (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',

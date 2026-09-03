@@ -20,6 +20,11 @@ model Account {
   streams  Stream?
   messages Message[]
 
+  followers Follower[] @relation("AccountFollowers")
+  following Follower[] @relation("UserFollowing")
+
+  notifications Notification[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -60,6 +65,10 @@ model Stream {
 
   streamBanLists StreamBanList[]
 
+  status        StreamStatus   @default(OFFLINE)
+  notifications Notification[]
+
+  @@index([accountId, status])
   @@map("streams")
 }
 
@@ -79,8 +88,46 @@ model StreamBanList {
   @@map("stream_ban_list")
 }
 
+model Follower {
+  following  Account @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
+
+  streamer   Account @relation("AccountFollowers", fields: [streamerId], references: [id], onDelete: Cascade)
+  streamerId String
+
+  createdAt  DateTime @default(now()) @map("created_at")
+  isNotified Boolean  @default(true) @map("is_notified")
+
+  @@unique([followingId, streamerId])
+  @@map("followers")
+}
+
+model Notification {
+  id        String  @id @default(uuid())
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
+
+  stream   Stream @relation(fields: [streamId], references: [id])
+  streamId String
+
+  type    String
+  message String
+
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([accountId, streamId])
+  @@index([accountId, isRead])
+  @@map("notifications")
+}
+
 enum Role {
   USER
-  STREAMER
   ADMIN
+}
+
+enum StreamStatus {
+  LIVE
+  OFFLINE
+  PAUSED
 }

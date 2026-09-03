@@ -30,6 +30,7 @@ export type StreamMinAggregateOutputType = {
   accountId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  status: $Enums.StreamStatus | null;
 };
 
 export type StreamMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type StreamMaxAggregateOutputType = {
   accountId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  status: $Enums.StreamStatus | null;
 };
 
 export type StreamCountAggregateOutputType = {
@@ -46,6 +48,7 @@ export type StreamCountAggregateOutputType = {
   accountId: number;
   createdAt: number;
   updatedAt: number;
+  status: number;
   _all: number;
 };
 
@@ -55,6 +58,7 @@ export type StreamMinAggregateInputType = {
   accountId?: true;
   createdAt?: true;
   updatedAt?: true;
+  status?: true;
 };
 
 export type StreamMaxAggregateInputType = {
@@ -63,6 +67,7 @@ export type StreamMaxAggregateInputType = {
   accountId?: true;
   createdAt?: true;
   updatedAt?: true;
+  status?: true;
 };
 
 export type StreamCountAggregateInputType = {
@@ -71,6 +76,7 @@ export type StreamCountAggregateInputType = {
   accountId?: true;
   createdAt?: true;
   updatedAt?: true;
+  status?: true;
   _all?: true;
 };
 
@@ -159,6 +165,7 @@ export type StreamGroupByOutputType = {
   accountId: string;
   createdAt: Date;
   updatedAt: Date;
+  status: $Enums.StreamStatus;
   _count: StreamCountAggregateOutputType | null;
   _min: StreamMinAggregateOutputType | null;
   _max: StreamMaxAggregateOutputType | null;
@@ -186,12 +193,14 @@ export type StreamWhereInput = {
   accountId?: Prisma.StringFilter<'Stream'> | string;
   createdAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
+  status?: Prisma.EnumStreamStatusFilter<'Stream'> | $Enums.StreamStatus;
   account?: Prisma.XOR<
     Prisma.AccountScalarRelationFilter,
     Prisma.AccountWhereInput
   >;
   messages?: Prisma.MessageListRelationFilter;
   streamBanLists?: Prisma.StreamBanListListRelationFilter;
+  notifications?: Prisma.NotificationListRelationFilter;
 };
 
 export type StreamOrderByWithRelationInput = {
@@ -200,9 +209,11 @@ export type StreamOrderByWithRelationInput = {
   accountId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  status?: Prisma.SortOrder;
   account?: Prisma.AccountOrderByWithRelationInput;
   messages?: Prisma.MessageOrderByRelationAggregateInput;
   streamBanLists?: Prisma.StreamBanListOrderByRelationAggregateInput;
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput;
 };
 
 export type StreamWhereUniqueInput = Prisma.AtLeast<
@@ -215,12 +226,14 @@ export type StreamWhereUniqueInput = Prisma.AtLeast<
     title?: Prisma.StringFilter<'Stream'> | string;
     createdAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Stream'> | Date | string;
+    status?: Prisma.EnumStreamStatusFilter<'Stream'> | $Enums.StreamStatus;
     account?: Prisma.XOR<
       Prisma.AccountScalarRelationFilter,
       Prisma.AccountWhereInput
     >;
     messages?: Prisma.MessageListRelationFilter;
     streamBanLists?: Prisma.StreamBanListListRelationFilter;
+    notifications?: Prisma.NotificationListRelationFilter;
   },
   'id' | 'accountId'
 >;
@@ -231,6 +244,7 @@ export type StreamOrderByWithAggregationInput = {
   accountId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  status?: Prisma.SortOrder;
   _count?: Prisma.StreamCountOrderByAggregateInput;
   _max?: Prisma.StreamMaxOrderByAggregateInput;
   _min?: Prisma.StreamMinOrderByAggregateInput;
@@ -249,6 +263,8 @@ export type StreamScalarWhereWithAggregatesInput = {
   accountId?: Prisma.StringWithAggregatesFilter<'Stream'> | string;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'Stream'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'Stream'> | Date | string;
+  status?:
+    Prisma.EnumStreamStatusWithAggregatesFilter<'Stream'> | $Enums.StreamStatus;
 };
 
 export type StreamCreateInput = {
@@ -256,9 +272,11 @@ export type StreamCreateInput = {
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
   streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateInput = {
@@ -267,8 +285,10 @@ export type StreamUncheckedCreateInput = {
   accountId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
   streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUpdateInput = {
@@ -276,9 +296,12 @@ export type StreamUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
   streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateInput = {
@@ -287,8 +310,11 @@ export type StreamUncheckedUpdateInput = {
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
   streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateManyInput = {
@@ -297,6 +323,7 @@ export type StreamCreateManyInput = {
   accountId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
 };
 
 export type StreamUpdateManyMutationInput = {
@@ -304,6 +331,8 @@ export type StreamUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
 };
 
 export type StreamUncheckedUpdateManyInput = {
@@ -312,6 +341,8 @@ export type StreamUncheckedUpdateManyInput = {
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
 };
 
 export type StreamNullableScalarRelationFilter = {
@@ -330,6 +361,7 @@ export type StreamCountOrderByAggregateInput = {
   accountId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  status?: Prisma.SortOrder;
 };
 
 export type StreamMaxOrderByAggregateInput = {
@@ -338,6 +370,7 @@ export type StreamMaxOrderByAggregateInput = {
   accountId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  status?: Prisma.SortOrder;
 };
 
 export type StreamMinOrderByAggregateInput = {
@@ -346,6 +379,7 @@ export type StreamMinOrderByAggregateInput = {
   accountId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  status?: Prisma.SortOrder;
 };
 
 export type StreamCreateNestedOneWithoutAccountInput = {
@@ -430,6 +464,10 @@ export type StreamUpdateOneRequiredWithoutMessagesNestedInput = {
   >;
 };
 
+export type EnumStreamStatusFieldUpdateOperationsInput = {
+  set?: $Enums.StreamStatus;
+};
+
 export type StreamCreateNestedOneWithoutStreamBanListsInput = {
   create?: Prisma.XOR<
     Prisma.StreamCreateWithoutStreamBanListsInput,
@@ -456,13 +494,41 @@ export type StreamUpdateOneRequiredWithoutStreamBanListsNestedInput = {
   >;
 };
 
+export type StreamCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<
+    Prisma.StreamCreateWithoutNotificationsInput,
+    Prisma.StreamUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutNotificationsInput;
+  connect?: Prisma.StreamWhereUniqueInput;
+};
+
+export type StreamUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.StreamCreateWithoutNotificationsInput,
+    Prisma.StreamUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.StreamCreateOrConnectWithoutNotificationsInput;
+  upsert?: Prisma.StreamUpsertWithoutNotificationsInput;
+  connect?: Prisma.StreamWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.StreamUpdateToOneWithWhereWithoutNotificationsInput,
+      Prisma.StreamUpdateWithoutNotificationsInput
+    >,
+    Prisma.StreamUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
 export type StreamCreateWithoutAccountInput = {
   id?: string;
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
   streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutAccountInput = {
@@ -470,8 +536,10 @@ export type StreamUncheckedCreateWithoutAccountInput = {
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
   streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamCreateOrConnectWithoutAccountInput = {
@@ -507,8 +575,11 @@ export type StreamUpdateWithoutAccountInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
   streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutAccountInput = {
@@ -516,8 +587,11 @@ export type StreamUncheckedUpdateWithoutAccountInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
   streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateWithoutMessagesInput = {
@@ -525,8 +599,10 @@ export type StreamCreateWithoutMessagesInput = {
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
   streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutMessagesInput = {
@@ -535,7 +611,9 @@ export type StreamUncheckedCreateWithoutMessagesInput = {
   accountId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamCreateOrConnectWithoutMessagesInput = {
@@ -571,8 +649,11 @@ export type StreamUpdateWithoutMessagesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
   streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutMessagesInput = {
@@ -581,7 +662,10 @@ export type StreamUncheckedUpdateWithoutMessagesInput = {
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamCreateWithoutStreamBanListsInput = {
@@ -589,8 +673,10 @@ export type StreamCreateWithoutStreamBanListsInput = {
   title: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
   messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamUncheckedCreateWithoutStreamBanListsInput = {
@@ -599,7 +685,9 @@ export type StreamUncheckedCreateWithoutStreamBanListsInput = {
   accountId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStreamInput;
 };
 
 export type StreamCreateOrConnectWithoutStreamBanListsInput = {
@@ -635,8 +723,11 @@ export type StreamUpdateWithoutStreamBanListsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
   messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutStreamNestedInput;
 };
 
 export type StreamUncheckedUpdateWithoutStreamBanListsInput = {
@@ -645,7 +736,84 @@ export type StreamUncheckedUpdateWithoutStreamBanListsInput = {
   accountId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStreamNestedInput;
+};
+
+export type StreamCreateWithoutNotificationsInput = {
+  id?: string;
+  title: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
+  account: Prisma.AccountCreateNestedOneWithoutStreamsInput;
+  messages?: Prisma.MessageCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListCreateNestedManyWithoutStreamInput;
+};
+
+export type StreamUncheckedCreateWithoutNotificationsInput = {
+  id?: string;
+  title: string;
+  accountId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  status?: $Enums.StreamStatus;
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutStreamInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedCreateNestedManyWithoutStreamInput;
+};
+
+export type StreamCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.StreamWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.StreamCreateWithoutNotificationsInput,
+    Prisma.StreamUncheckedCreateWithoutNotificationsInput
+  >;
+};
+
+export type StreamUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<
+    Prisma.StreamUpdateWithoutNotificationsInput,
+    Prisma.StreamUncheckedUpdateWithoutNotificationsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.StreamCreateWithoutNotificationsInput,
+    Prisma.StreamUncheckedCreateWithoutNotificationsInput
+  >;
+  where?: Prisma.StreamWhereInput;
+};
+
+export type StreamUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.StreamWhereInput;
+  data: Prisma.XOR<
+    Prisma.StreamUpdateWithoutNotificationsInput,
+    Prisma.StreamUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
+export type StreamUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
+  account?: Prisma.AccountUpdateOneRequiredWithoutStreamsNestedInput;
+  messages?: Prisma.MessageUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUpdateManyWithoutStreamNestedInput;
+};
+
+export type StreamUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  status?:
+    Prisma.EnumStreamStatusFieldUpdateOperationsInput | $Enums.StreamStatus;
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutStreamNestedInput;
+  streamBanLists?: Prisma.StreamBanListUncheckedUpdateManyWithoutStreamNestedInput;
 };
 
 /**
@@ -655,6 +823,7 @@ export type StreamUncheckedUpdateWithoutStreamBanListsInput = {
 export type StreamCountOutputType = {
   messages: number;
   streamBanLists: number;
+  notifications: number;
 };
 
 export type StreamCountOutputTypeSelect<
@@ -663,6 +832,7 @@ export type StreamCountOutputTypeSelect<
 > = {
   messages?: boolean | StreamCountOutputTypeCountMessagesArgs;
   streamBanLists?: boolean | StreamCountOutputTypeCountStreamBanListsArgs;
+  notifications?: boolean | StreamCountOutputTypeCountNotificationsArgs;
 };
 
 /**
@@ -698,6 +868,16 @@ export type StreamCountOutputTypeCountStreamBanListsArgs<
   where?: Prisma.StreamBanListWhereInput;
 };
 
+/**
+ * StreamCountOutputType without action
+ */
+export type StreamCountOutputTypeCountNotificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.NotificationWhereInput;
+};
+
 export type StreamSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -708,9 +888,11 @@ export type StreamSelect<
     accountId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    status?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
     messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>;
     streamBanLists?: boolean | Prisma.Stream$streamBanListsArgs<ExtArgs>;
+    notifications?: boolean | Prisma.Stream$notificationsArgs<ExtArgs>;
     _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -726,6 +908,7 @@ export type StreamSelectCreateManyAndReturn<
     accountId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    status?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -741,6 +924,7 @@ export type StreamSelectUpdateManyAndReturn<
     accountId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    status?: boolean;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['stream']
@@ -752,13 +936,14 @@ export type StreamSelectScalar = {
   accountId?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
+  status?: boolean;
 };
 
 export type StreamOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'title' | 'accountId' | 'createdAt' | 'updatedAt',
+  'id' | 'title' | 'accountId' | 'createdAt' | 'updatedAt' | 'status',
   ExtArgs['result']['stream']
 >;
 export type StreamInclude<
@@ -768,6 +953,7 @@ export type StreamInclude<
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>;
   messages?: boolean | Prisma.Stream$messagesArgs<ExtArgs>;
   streamBanLists?: boolean | Prisma.Stream$streamBanListsArgs<ExtArgs>;
+  notifications?: boolean | Prisma.Stream$notificationsArgs<ExtArgs>;
   _count?: boolean | Prisma.StreamCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type StreamIncludeCreateManyAndReturn<
@@ -792,6 +978,7 @@ export type $StreamPayload<
     account: Prisma.$AccountPayload<ExtArgs>;
     messages: Prisma.$MessagePayload<ExtArgs>[];
     streamBanLists: Prisma.$StreamBanListPayload<ExtArgs>[];
+    notifications: Prisma.$NotificationPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -800,6 +987,7 @@ export type $StreamPayload<
       accountId: string;
       createdAt: Date;
       updatedAt: Date;
+      status: $Enums.StreamStatus;
     },
     ExtArgs['result']['stream']
   >;
@@ -1386,6 +1574,17 @@ export interface Prisma__StreamClient<
       >
     | Null
   >;
+  notifications<T extends Prisma.Stream$notificationsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Stream$notificationsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$NotificationPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1427,6 +1626,7 @@ export interface StreamFieldRefs {
   readonly accountId: Prisma.FieldRef<'Stream', 'String'>;
   readonly createdAt: Prisma.FieldRef<'Stream', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'Stream', 'DateTime'>;
+  readonly status: Prisma.FieldRef<'Stream', 'StreamStatus'>;
 }
 
 // Custom InputTypes
@@ -1943,6 +2143,36 @@ export type Stream$streamBanListsArgs<
   skip?: number;
   distinct?:
     Prisma.StreamBanListScalarFieldEnum | Prisma.StreamBanListScalarFieldEnum[];
+};
+
+/**
+ * Stream.notifications
+ */
+export type Stream$notificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null;
+  where?: Prisma.NotificationWhereInput;
+  orderBy?:
+    | Prisma.NotificationOrderByWithRelationInput
+    | Prisma.NotificationOrderByWithRelationInput[];
+  cursor?: Prisma.NotificationWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[];
 };
 
 /**

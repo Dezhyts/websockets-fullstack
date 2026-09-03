@@ -11,4 +11,6 @@ export type * from './models/Account.js';
 export type * from './models/Message.js';
 export type * from './models/Stream.js';
 export type * from './models/StreamBanList.js';
+export type * from './models/Follower.js';
+export type * from './models/Notification.js';
 export type * from './commonInputTypes.js';

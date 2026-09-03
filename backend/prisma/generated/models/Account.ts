@@ -215,6 +215,9 @@ export type AccountWhereInput = {
     Prisma.StreamWhereInput
   > | null;
   messages?: Prisma.MessageListRelationFilter;
+  followers?: Prisma.FollowerListRelationFilter;
+  following?: Prisma.FollowerListRelationFilter;
+  notifications?: Prisma.NotificationListRelationFilter;
 };
 
 export type AccountOrderByWithRelationInput = {
@@ -228,6 +231,9 @@ export type AccountOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder;
   streams?: Prisma.StreamOrderByWithRelationInput;
   messages?: Prisma.MessageOrderByRelationAggregateInput;
+  followers?: Prisma.FollowerOrderByRelationAggregateInput;
+  following?: Prisma.FollowerOrderByRelationAggregateInput;
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput;
 };
 
 export type AccountWhereUniqueInput = Prisma.AtLeast<
@@ -248,6 +254,9 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<
       Prisma.StreamWhereInput
     > | null;
     messages?: Prisma.MessageListRelationFilter;
+    followers?: Prisma.FollowerListRelationFilter;
+    following?: Prisma.FollowerListRelationFilter;
+    notifications?: Prisma.NotificationListRelationFilter;
   },
   'id' | 'username' | 'email'
 >;
@@ -295,6 +304,9 @@ export type AccountCreateInput = {
   updatedAt?: Date | string;
   streams?: Prisma.StreamCreateNestedOneWithoutAccountInput;
   messages?: Prisma.MessageCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountUncheckedCreateInput = {
@@ -308,6 +320,9 @@ export type AccountUncheckedCreateInput = {
   updatedAt?: Date | string;
   streams?: Prisma.StreamUncheckedCreateNestedOneWithoutAccountInput;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerUncheckedCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerUncheckedCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountUpdateInput = {
@@ -321,6 +336,9 @@ export type AccountUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   streams?: Prisma.StreamUpdateOneWithoutAccountNestedInput;
   messages?: Prisma.MessageUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutAccountNestedInput;
 };
 
 export type AccountUncheckedUpdateInput = {
@@ -334,6 +352,9 @@ export type AccountUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   streams?: Prisma.StreamUncheckedUpdateOneWithoutAccountNestedInput;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUncheckedUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUncheckedUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutAccountNestedInput;
 };
 
 export type AccountCreateManyInput = {
@@ -482,6 +503,84 @@ export type AccountUpdateOneRequiredWithoutStreamsNestedInput = {
   >;
 };
 
+export type AccountCreateNestedOneWithoutFollowingInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowingInput,
+    Prisma.AccountUncheckedCreateWithoutFollowingInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutFollowingInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+};
+
+export type AccountCreateNestedOneWithoutFollowersInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowersInput,
+    Prisma.AccountUncheckedCreateWithoutFollowersInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutFollowersInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+};
+
+export type AccountUpdateOneRequiredWithoutFollowingNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowingInput,
+    Prisma.AccountUncheckedCreateWithoutFollowingInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutFollowingInput;
+  upsert?: Prisma.AccountUpsertWithoutFollowingInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.AccountUpdateToOneWithWhereWithoutFollowingInput,
+      Prisma.AccountUpdateWithoutFollowingInput
+    >,
+    Prisma.AccountUncheckedUpdateWithoutFollowingInput
+  >;
+};
+
+export type AccountUpdateOneRequiredWithoutFollowersNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowersInput,
+    Prisma.AccountUncheckedCreateWithoutFollowersInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutFollowersInput;
+  upsert?: Prisma.AccountUpsertWithoutFollowersInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.AccountUpdateToOneWithWhereWithoutFollowersInput,
+      Prisma.AccountUpdateWithoutFollowersInput
+    >,
+    Prisma.AccountUncheckedUpdateWithoutFollowersInput
+  >;
+};
+
+export type AccountCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutNotificationsInput,
+    Prisma.AccountUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutNotificationsInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+};
+
+export type AccountUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.AccountCreateWithoutNotificationsInput,
+    Prisma.AccountUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutNotificationsInput;
+  upsert?: Prisma.AccountUpsertWithoutNotificationsInput;
+  connect?: Prisma.AccountWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.AccountUpdateToOneWithWhereWithoutNotificationsInput,
+      Prisma.AccountUpdateWithoutNotificationsInput
+    >,
+    Prisma.AccountUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
 export type AccountCreateWithoutMessagesInput = {
   id?: string;
   username: string;
@@ -492,6 +591,9 @@ export type AccountCreateWithoutMessagesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   streams?: Prisma.StreamCreateNestedOneWithoutAccountInput;
+  followers?: Prisma.FollowerCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountUncheckedCreateWithoutMessagesInput = {
@@ -504,6 +606,9 @@ export type AccountUncheckedCreateWithoutMessagesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   streams?: Prisma.StreamUncheckedCreateNestedOneWithoutAccountInput;
+  followers?: Prisma.FollowerUncheckedCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerUncheckedCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountCreateOrConnectWithoutMessagesInput = {
@@ -544,6 +649,9 @@ export type AccountUpdateWithoutMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   streams?: Prisma.StreamUpdateOneWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutAccountNestedInput;
 };
 
 export type AccountUncheckedUpdateWithoutMessagesInput = {
@@ -556,6 +664,9 @@ export type AccountUncheckedUpdateWithoutMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   streams?: Prisma.StreamUncheckedUpdateOneWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUncheckedUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUncheckedUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutAccountNestedInput;
 };
 
 export type AccountCreateWithoutStreamsInput = {
@@ -568,6 +679,9 @@ export type AccountCreateWithoutStreamsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   messages?: Prisma.MessageCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountUncheckedCreateWithoutStreamsInput = {
@@ -580,6 +694,9 @@ export type AccountUncheckedCreateWithoutStreamsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerUncheckedCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerUncheckedCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutAccountInput;
 };
 
 export type AccountCreateOrConnectWithoutStreamsInput = {
@@ -620,6 +737,9 @@ export type AccountUpdateWithoutStreamsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutAccountNestedInput;
 };
 
 export type AccountUncheckedUpdateWithoutStreamsInput = {
@@ -632,6 +752,273 @@ export type AccountUncheckedUpdateWithoutStreamsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   messages?: Prisma.MessageUncheckedUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUncheckedUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUncheckedUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutAccountNestedInput;
+};
+
+export type AccountCreateWithoutFollowingInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerCreateNestedManyWithoutStreamerInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutAccountInput;
+};
+
+export type AccountUncheckedCreateWithoutFollowingInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamUncheckedCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerUncheckedCreateNestedManyWithoutStreamerInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutAccountInput;
+};
+
+export type AccountCreateOrConnectWithoutFollowingInput = {
+  where: Prisma.AccountWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowingInput,
+    Prisma.AccountUncheckedCreateWithoutFollowingInput
+  >;
+};
+
+export type AccountCreateWithoutFollowersInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageCreateNestedManyWithoutAccountInput;
+  following?: Prisma.FollowerCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutAccountInput;
+};
+
+export type AccountUncheckedCreateWithoutFollowersInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamUncheckedCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAccountInput;
+  following?: Prisma.FollowerUncheckedCreateNestedManyWithoutFollowingInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutAccountInput;
+};
+
+export type AccountCreateOrConnectWithoutFollowersInput = {
+  where: Prisma.AccountWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowersInput,
+    Prisma.AccountUncheckedCreateWithoutFollowersInput
+  >;
+};
+
+export type AccountUpsertWithoutFollowingInput = {
+  update: Prisma.XOR<
+    Prisma.AccountUpdateWithoutFollowingInput,
+    Prisma.AccountUncheckedUpdateWithoutFollowingInput
+  >;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowingInput,
+    Prisma.AccountUncheckedCreateWithoutFollowingInput
+  >;
+  where?: Prisma.AccountWhereInput;
+};
+
+export type AccountUpdateToOneWithWhereWithoutFollowingInput = {
+  where?: Prisma.AccountWhereInput;
+  data: Prisma.XOR<
+    Prisma.AccountUpdateWithoutFollowingInput,
+    Prisma.AccountUncheckedUpdateWithoutFollowingInput
+  >;
+};
+
+export type AccountUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUpdateManyWithoutStreamerNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutAccountNestedInput;
+};
+
+export type AccountUncheckedUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUncheckedUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUncheckedUpdateManyWithoutStreamerNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutAccountNestedInput;
+};
+
+export type AccountUpsertWithoutFollowersInput = {
+  update: Prisma.XOR<
+    Prisma.AccountUpdateWithoutFollowersInput,
+    Prisma.AccountUncheckedUpdateWithoutFollowersInput
+  >;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutFollowersInput,
+    Prisma.AccountUncheckedCreateWithoutFollowersInput
+  >;
+  where?: Prisma.AccountWhereInput;
+};
+
+export type AccountUpdateToOneWithWhereWithoutFollowersInput = {
+  where?: Prisma.AccountWhereInput;
+  data: Prisma.XOR<
+    Prisma.AccountUpdateWithoutFollowersInput,
+    Prisma.AccountUncheckedUpdateWithoutFollowersInput
+  >;
+};
+
+export type AccountUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUpdateManyWithoutAccountNestedInput;
+  following?: Prisma.FollowerUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutAccountNestedInput;
+};
+
+export type AccountUncheckedUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUncheckedUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutAccountNestedInput;
+  following?: Prisma.FollowerUncheckedUpdateManyWithoutFollowingNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutAccountNestedInput;
+};
+
+export type AccountCreateWithoutNotificationsInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerCreateNestedManyWithoutFollowingInput;
+};
+
+export type AccountUncheckedCreateWithoutNotificationsInput = {
+  id?: string;
+  username: string;
+  email: string;
+  role?: $Enums.Role;
+  password: string;
+  avatar?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  streams?: Prisma.StreamUncheckedCreateNestedOneWithoutAccountInput;
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutAccountInput;
+  followers?: Prisma.FollowerUncheckedCreateNestedManyWithoutStreamerInput;
+  following?: Prisma.FollowerUncheckedCreateNestedManyWithoutFollowingInput;
+};
+
+export type AccountCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.AccountWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutNotificationsInput,
+    Prisma.AccountUncheckedCreateWithoutNotificationsInput
+  >;
+};
+
+export type AccountUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<
+    Prisma.AccountUpdateWithoutNotificationsInput,
+    Prisma.AccountUncheckedUpdateWithoutNotificationsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.AccountCreateWithoutNotificationsInput,
+    Prisma.AccountUncheckedCreateWithoutNotificationsInput
+  >;
+  where?: Prisma.AccountWhereInput;
+};
+
+export type AccountUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.AccountWhereInput;
+  data: Prisma.XOR<
+    Prisma.AccountUpdateWithoutNotificationsInput,
+    Prisma.AccountUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
+export type AccountUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUpdateManyWithoutFollowingNestedInput;
+};
+
+export type AccountUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  streams?: Prisma.StreamUncheckedUpdateOneWithoutAccountNestedInput;
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutAccountNestedInput;
+  followers?: Prisma.FollowerUncheckedUpdateManyWithoutStreamerNestedInput;
+  following?: Prisma.FollowerUncheckedUpdateManyWithoutFollowingNestedInput;
 };
 
 /**
@@ -640,6 +1027,9 @@ export type AccountUncheckedUpdateWithoutStreamsInput = {
 
 export type AccountCountOutputType = {
   messages: number;
+  followers: number;
+  following: number;
+  notifications: number;
 };
 
 export type AccountCountOutputTypeSelect<
@@ -647,6 +1037,9 @@ export type AccountCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   messages?: boolean | AccountCountOutputTypeCountMessagesArgs;
+  followers?: boolean | AccountCountOutputTypeCountFollowersArgs;
+  following?: boolean | AccountCountOutputTypeCountFollowingArgs;
+  notifications?: boolean | AccountCountOutputTypeCountNotificationsArgs;
 };
 
 /**
@@ -672,6 +1065,36 @@ export type AccountCountOutputTypeCountMessagesArgs<
   where?: Prisma.MessageWhereInput;
 };
 
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountFollowersArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.FollowerWhereInput;
+};
+
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountFollowingArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.FollowerWhereInput;
+};
+
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountNotificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.NotificationWhereInput;
+};
+
 export type AccountSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -687,6 +1110,9 @@ export type AccountSelect<
     updatedAt?: boolean;
     streams?: boolean | Prisma.Account$streamsArgs<ExtArgs>;
     messages?: boolean | Prisma.Account$messagesArgs<ExtArgs>;
+    followers?: boolean | Prisma.Account$followersArgs<ExtArgs>;
+    following?: boolean | Prisma.Account$followingArgs<ExtArgs>;
+    notifications?: boolean | Prisma.Account$notificationsArgs<ExtArgs>;
     _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['account']
@@ -757,6 +1183,9 @@ export type AccountInclude<
 > = {
   streams?: boolean | Prisma.Account$streamsArgs<ExtArgs>;
   messages?: boolean | Prisma.Account$messagesArgs<ExtArgs>;
+  followers?: boolean | Prisma.Account$followersArgs<ExtArgs>;
+  following?: boolean | Prisma.Account$followingArgs<ExtArgs>;
+  notifications?: boolean | Prisma.Account$notificationsArgs<ExtArgs>;
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type AccountIncludeCreateManyAndReturn<
@@ -776,6 +1205,9 @@ export type $AccountPayload<
   objects: {
     streams: Prisma.$StreamPayload<ExtArgs> | null;
     messages: Prisma.$MessagePayload<ExtArgs>[];
+    followers: Prisma.$FollowerPayload<ExtArgs>[];
+    following: Prisma.$FollowerPayload<ExtArgs>[];
+    notifications: Prisma.$NotificationPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1361,6 +1793,39 @@ export interface Prisma__AccountClient<
       >
     | Null
   >;
+  followers<T extends Prisma.Account$followersArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Account$followersArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$FollowerPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  following<T extends Prisma.Account$followingArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Account$followingArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$FollowerPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  notifications<T extends Prisma.Account$notificationsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Account$notificationsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$NotificationPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1911,6 +2376,94 @@ export type Account$messagesArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[];
+};
+
+/**
+ * Account.followers
+ */
+export type Account$followersArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Follower
+   */
+  select?: Prisma.FollowerSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Follower
+   */
+  omit?: Prisma.FollowerOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowerInclude<ExtArgs> | null;
+  where?: Prisma.FollowerWhereInput;
+  orderBy?:
+    | Prisma.FollowerOrderByWithRelationInput
+    | Prisma.FollowerOrderByWithRelationInput[];
+  cursor?: Prisma.FollowerWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.FollowerScalarFieldEnum | Prisma.FollowerScalarFieldEnum[];
+};
+
+/**
+ * Account.following
+ */
+export type Account$followingArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Follower
+   */
+  select?: Prisma.FollowerSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Follower
+   */
+  omit?: Prisma.FollowerOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowerInclude<ExtArgs> | null;
+  where?: Prisma.FollowerWhereInput;
+  orderBy?:
+    | Prisma.FollowerOrderByWithRelationInput
+    | Prisma.FollowerOrderByWithRelationInput[];
+  cursor?: Prisma.FollowerWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.FollowerScalarFieldEnum | Prisma.FollowerScalarFieldEnum[];
+};
+
+/**
+ * Account.notifications
+ */
+export type Account$notificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null;
+  where?: Prisma.NotificationWhereInput;
+  orderBy?:
+    | Prisma.NotificationOrderByWithRelationInput
+    | Prisma.NotificationOrderByWithRelationInput[];
+  cursor?: Prisma.NotificationWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[];
 };
 
 /**

@@ -64,3 +64,13 @@ export type Stream = Prisma.StreamModel;
  *
  */
 export type StreamBanList = Prisma.StreamBanListModel;
+/**
+ * Model Follower
+ *
+ */
+export type Follower = Prisma.FollowerModel;
+/**
+ * Model Notification
+ *
+ */
+export type Notification = Prisma.NotificationModel;

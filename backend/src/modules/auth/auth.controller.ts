@@ -9,20 +9,20 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CurrentUser } from '@shared/decorators/current-user.decorator';
+import { AuthRequestGuard } from '@shared/guard/request/auth.request.guard';
+import type { Request, Response } from 'express';
+import ms, { StringValue } from 'ms';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './dto/auth.dto';
 import {
   LoginDtoResponse,
   LogoutDtoResponse,
   RefreshDtoResponse,
   RegisterDtoResponse,
 } from './dto/auth-response.dto';
-import { CurrentUser } from '@shared/decorators/current-user.decorator';
-import { AuthGuard } from '@shared/guard/auth.guard';
-import type { Request, Response } from 'express';
-import { ConfigService } from '@nestjs/config';
-import ms, { StringValue } from 'ms';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -79,6 +79,7 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, type: RefreshDtoResponse })
+  @UseGuards(AuthRequestGuard)
   @Post('refresh')
   async refresh(
     @Req() req: Request,
@@ -102,7 +103,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 200, type: LogoutDtoResponse })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthRequestGuard)
   @Post('logout')
   logout(
     @CurrentUser('sub') userId: string,

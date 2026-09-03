@@ -10,8 +10,15 @@
 
 export const Role = {
   USER: 'USER',
-  STREAMER: 'STREAMER',
   ADMIN: 'ADMIN',
 } as const;
 
 export type Role = (typeof Role)[keyof typeof Role];
+
+export const StreamStatus = {
+  LIVE: 'LIVE',
+  OFFLINE: 'OFFLINE',
+  PAUSED: 'PAUSED',
+} as const;
+
+export type StreamStatus = (typeof StreamStatus)[keyof typeof StreamStatus];

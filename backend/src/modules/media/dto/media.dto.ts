@@ -1,26 +1,21 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class GetTokenDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'conference-room-101',
+    example: 'alexbibi',
     required: true,
-    description: 'Room name',
+    description: 'Username of the streamer',
   })
-  roomName: string;
-}
-
-export class IngressDto {
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    example: 'conference-room-101',
-    required: true,
-    description: 'Room name',
-  })
-  roomName: string;
+  username: string;
 }
 
 export class ErrorResponseDto {
@@ -35,4 +30,14 @@ export class ErrorResponseDto {
   @IsString()
   @ApiProperty()
   error: string;
+}
+
+export class CreateIngressDto {
+  @IsString()
+  @ApiPropertyOptional({
+    example: 'We are playing through Dark Souls right now',
+  })
+  @IsOptional()
+  @MaxLength(70)
+  title?: string;
 }

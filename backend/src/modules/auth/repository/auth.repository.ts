@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Account } from '@prisma/generated/client';
 import { AccountCreateInput } from '@prisma/generated/models';
 
+export type AccountPick = Pick<Account, 'id'>;
 @Injectable()
 export class AuthRepository {
   constructor(private readonly prismaService: PrismaService) {}
@@ -32,6 +33,17 @@ export class AuthRepository {
   async createAccount(data: AccountCreateInput): Promise<Account> {
     return this.prismaService.account.create({
       data,
+    });
+  }
+
+  async findByUsername(username: string): Promise<AccountPick | null> {
+    return this.prismaService.account.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
     });
   }
 }
