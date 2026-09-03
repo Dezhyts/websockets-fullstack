@@ -18,6 +18,7 @@ interface ChatStoreState {
   streamId: string | null;
   isConnected: boolean;
   messages: ChatMessageResponse[];
+  chatMessageError: string | null;
 
   connect: (streamId: string) => void;
   disconnect: () => void;
@@ -30,6 +31,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
   streamId: null,
   isConnected: false,
   messages: [],
+  chatMessageError: null,
 
   connect: (streamId) => {
     if (get().socket) return;
@@ -61,6 +63,13 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
 
     socket.on('error', (data: ErrorResponse) => {
       console.log('Socket error:', data.message);
+
+      if (data.code === 'LIMIT_MESSAGE') {
+        set({ chatMessageError: data.message });
+        setTimeout(() => {
+          set({ chatMessageError: null });
+        }, 3000);
+      }
     });
 
     socket.connect();
@@ -73,7 +82,13 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
     socket.emit('leave_stream', { streamId } as LeaveStreamDto);
     socket.removeAllListeners();
     socket.disconnect();
-    set({ socket: null, streamId: null, isConnected: false, messages: [] });
+    set({
+      socket: null,
+      streamId: null,
+      isConnected: false,
+      messages: [],
+      chatMessageError: null,
+    });
   },
 
   sendMessage: (data) => {

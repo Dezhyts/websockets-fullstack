@@ -57,6 +57,9 @@ export interface UserBannedResponse {
 
 export interface ErrorResponse {
   message: string;
+  code?: string;
+  timeLeft?: number;
+  windowSeconds?: number;
 }
 
 export interface MessagePaylodResponse {

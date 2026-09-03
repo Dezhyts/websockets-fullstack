@@ -132,10 +132,47 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/notification/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["NotificationController_getNotifications"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/follow/toggle/{streamerId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["FollowController_toggleSubscription"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        ErrorResponseDto: {
+            statusCode: number;
+            message: string;
+            error: string;
+        };
         GetTokenResponseDto: {
             /**
              * @description stream token for authorization user
@@ -153,12 +190,9 @@ export interface components {
              */
             isAuth: boolean;
         };
-        IngressDto: {
-            /**
-             * @description Room name
-             * @example conference-room-101
-             */
-            roomName: string;
+        CreateIngressDto: {
+            /** @example We are playing through Dark Souls right now */
+            title?: string;
         };
         CreateIngressResponseDto: {
             /** @example IN_id */
@@ -167,11 +201,6 @@ export interface components {
             url: string;
             /** @example sk-xxxx */
             streamKey: string;
-        };
-        ErrorResponseDto: {
-            statusCode: number;
-            message: string;
-            error: string;
         };
         RegisterDto: {
             /**
@@ -240,6 +269,13 @@ export interface components {
              */
             success: boolean;
         };
+        FollowResponseDto: {
+            /**
+             * @description Status follow
+             * @example true
+             */
+            isNotified: boolean;
+        };
     };
     responses: never;
     parameters: never;
@@ -266,13 +302,40 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
         };
     };
     MediaController_getToken: {
         parameters: {
             query: {
-                /** @description Room name */
-                roomName: string;
+                /** @description Username of the streamer */
+                username: string;
             };
             header?: never;
             path?: never;
@@ -293,21 +356,27 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
             };
             /** @description Forbidden */
             403: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
             };
             /** @description Not found */
             404: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
             };
         };
     };
@@ -320,7 +389,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["IngressDto"];
+                "application/json": components["schemas"]["CreateIngressDto"];
             };
         };
         responses: {
@@ -441,6 +510,73 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LogoutDtoResponse"];
+                };
+            };
+        };
+    };
+    NotificationController_getNotifications: {
+        parameters: {
+            query: {
+                limit: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponseDto"];
+                };
+            };
+        };
+    };
+    FollowController_toggleSubscription: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                streamerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FollowResponseDto"];
                 };
             };
         };

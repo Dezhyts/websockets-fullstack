@@ -14,23 +14,22 @@ apiClient.use({
         const cookiesStore = await cookies();
         const cookieString = cookiesStore.toString();
 
-        // ВАЖНЫЙ ЛОГ: Посмотрим, видит ли Next.js хоть какие-то куки
-        console.log('👉 COOKIES ON SERVER:', cookieString);
+        console.log('cookies:', cookieString);
 
         if (cookieString) {
           request.headers.set('cookie', cookieString);
         }
       } catch (error) {
-        console.log('❌ Error reading cookies:', error);
+        console.log('Error reading cookies:', error);
       }
     }
     return request;
   },
 });
 
-export async function getStreamIngresToken(roomName: string) {
+export async function getStreamIngresToken(username: string) {
   const { data, response } = await apiClient.GET('/media/token', {
-    params: { query: { roomName } },
+    params: { query: { username } },
     cache: 'no-store',
   });
 

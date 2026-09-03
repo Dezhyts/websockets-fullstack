@@ -22,7 +22,7 @@ export default async function StreamPage(props: StreamPageProps) {
   console.log('API Result Data:', result.data);
   console.log('Computed isAuth:', !!result.data?.isAuth);
   return (
-    <div className="flex h-screen w-screen bg-background text-foreground overflow-hidden">
+    <div className="flex h-screen w-screen bg-background text-foreground overflow-hidden ">
       <div className="flex-1 flex p-4 h-full">
         {result.isError ? (
           <div>

@@ -1,8 +1,10 @@
 'use client';
 import { useChatStore } from '@/entities/chat';
-import { Button, Container, Input } from '@/shared/components';
+import { Button, Container, Input, Text } from '@/shared/components';
 import React, { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
+import { ChatMessage } from './chat-message';
+import { useThrottleCallback } from '@/shared/hooks/useThrottle';
 
 interface ChatWidgetProps {
   streamId: string;
@@ -11,16 +13,23 @@ interface ChatWidgetProps {
 export function ChatWidget({ streamId, isAuth }: ChatWidgetProps) {
   const [inputValue, setInputValue] = useState('');
 
-  const { messages, isConnected, connect, disconnect, sendMessage } =
-    useChatStore(
-      useShallow((state) => ({
-        messages: state.messages,
-        isConnected: state.isConnected,
-        connect: state.connect,
-        disconnect: state.disconnect,
-        sendMessage: state.sendMessage,
-      })),
-    );
+  const {
+    messages,
+    isConnected,
+    connect,
+    disconnect,
+    sendMessage,
+    chatMessageError,
+  } = useChatStore(
+    useShallow((state) => ({
+      messages: state.messages,
+      isConnected: state.isConnected,
+      connect: state.connect,
+      disconnect: state.disconnect,
+      sendMessage: state.sendMessage,
+      chatMessageError: state.chatMessageError,
+    })),
+  );
 
   useEffect(() => {
     connect(streamId);
@@ -29,11 +38,11 @@ export function ChatWidget({ streamId, isAuth }: ChatWidgetProps) {
     };
   }, [connect, disconnect, streamId]);
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+  const handleSendMessage = useThrottleCallback(() => {
+    if (!inputValue.trim() || !!chatMessageError) return;
     sendMessage({ message: inputValue });
     setInputValue('');
-  };
+  }, 200);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -44,32 +53,33 @@ export function ChatWidget({ streamId, isAuth }: ChatWidgetProps) {
   return (
     <Container className="flex flex-col h-full w-96">
       <div className="flex flex-col gap-4 ">
-        <h1 className=" text-xl font-bold ">
-          Чат стрима {!isConnected && '(connecting...)'}
-        </h1>
+        <Text size="2xl">Чат стрима {!isConnected && '(connecting...)'}</Text>
 
-        <div className="h-80 border flex p-2 g-1 overflow-y-auto">
+        <div className="h-80 flex flex-col gap-1 border p-2 overflow-y-auto overflow-x-hidden">
           {messages.map((message) => (
-            <p key={message.id}>
-              {message.username}:{message.message}
-            </p>
+            <ChatMessage
+              key={message.id}
+              username={message.username}
+              message={message.message}
+            />
           ))}
         </div>
       </div>
 
       <div className="flex gap-2 mt-4">
+        {isAuth && chatMessageError && <div>{chatMessageError}</div>}
         {isAuth ? (
           <>
             <Input
               type="text"
               value={inputValue}
-              disabled={!isConnected}
+              disabled={!isConnected || !!chatMessageError}
               placeholder="Write a message..."
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
             />
             <Button
-              disabled={!isConnected}
+              disabled={!isConnected || !!chatMessageError}
               variant="default"
               onClick={handleSendMessage}
             >
