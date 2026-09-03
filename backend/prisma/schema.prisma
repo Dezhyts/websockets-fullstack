@@ -1,0 +1,133 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Account {
+  id       String @id @default(uuid())
+  username String @unique
+  email    String @unique
+  role     Role   @default(USER)
+
+  password String
+  avatar   String?
+
+  streams  Stream?
+  messages Message[]
+
+  followers Follower[] @relation("AccountFollowers")
+  following Follower[] @relation("UserFollowing")
+
+  notifications Notification[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("accounts")
+}
+
+model Message {
+  id   String  @id @default(uuid())
+  text String?
+
+  stream   Stream @relation(fields: [streamId], references: [id])
+  streamId String
+
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  replyToId String?
+  replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies   Message[] @relation("MessageReplies")
+
+  @@index([streamId, accountId])
+  @@map("messages")
+}
+
+model Stream {
+  id String @id @default(uuid())
+
+  title String
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @unique
+
+  messages  Message[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  streamBanLists StreamBanList[]
+
+  status        StreamStatus   @default(OFFLINE)
+  notifications Notification[]
+
+  @@index([accountId, status])
+  @@map("streams")
+}
+
+model StreamBanList {
+  id String @id @default(uuid())
+
+  streamId String
+  stream   Stream @relation(fields: [streamId], references: [id])
+  userId   String
+
+  bannedBy String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([streamId, userId])
+  @@map("stream_ban_list")
+}
+
+model Follower {
+  following  Account @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
+
+  streamer   Account @relation("AccountFollowers", fields: [streamerId], references: [id], onDelete: Cascade)
+  streamerId String
+
+  createdAt  DateTime @default(now()) @map("created_at")
+  isNotified Boolean  @default(true) @map("is_notified")
+
+  @@unique([followingId, streamerId])
+  @@map("followers")
+}
+
+model Notification {
+  id        String  @id @default(uuid())
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
+
+  stream   Stream @relation(fields: [streamId], references: [id])
+  streamId String
+
+  type    String
+  message String
+
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([accountId, streamId])
+  @@index([accountId, isRead])
+  @@map("notifications")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum StreamStatus {
+  LIVE
+  OFFLINE
+  PAUSED
+}

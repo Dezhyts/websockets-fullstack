@@ -1,0 +1,19 @@
+port: 7880
+bind_addresses:
+  - ''
+rtc:
+  tcp_port: 7881
+  port_range_start: 50000
+  port_range_end: 50019
+  use_external_ip: false
+redis:
+  address: websockets-redis:6379
+  password: '12345'
+ingress:
+  rtmp_base_url: 'rtmp://localhost:1935/x'
+keys:
+  devkey: 'super_secret_123_456_secure_string_12'
+webhook:
+  api_key: devkey
+  urls:
+    - 'http://host.docker.internal:3000/media/webhook'

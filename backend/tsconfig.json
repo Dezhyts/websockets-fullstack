@@ -10,6 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
@@ -19,6 +20,17 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "types": ["node", "jest"],
+    "strictPropertyInitialization": false,
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "@prisma/generated/*": ["./prisma/generated/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"]
+    }
+  },
+  "include": ["src/**/*", "test/**/*", "**/*spec.ts", "prisma.config.ts"],
+  "exclude": ["node_modules", "dist", "k6/**/*"]
 }
